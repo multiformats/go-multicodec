@@ -53,3 +53,29 @@ func TestRoundtripCheck(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestHeaderMC(t *testing.T) {
+	codec := Multicodec(nil)
+	for _, tc := range testCases {
+		mctest.HeaderTest(t, codec, &tc)
+	}
+}
+
+func TestRoundtripBasicMC(t *testing.T) {
+	codec := Multicodec(nil)
+	for _, tca := range testCases {
+		var tcb map[string]interface{}
+		mctest.RoundTripTest(t, codec, &tca, &tcb)
+	}
+}
+
+func TestRoundtripCheckMC(t *testing.T) {
+	codec := Multicodec(nil)
+	f := func(o1 TestType) bool {
+		var o2 TestType
+		return mctest.RoundTripTest(t, codec, &o1, &o2)
+	}
+	if err := quick.Check(f, nil); err != nil {
+		t.Error(err)
+	}
+}
