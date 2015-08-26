@@ -32,8 +32,9 @@ func Multicodec(m proto.Message) mc.Multicodec {
 
 func (c *codec) Encoder(w io.Writer) mc.Encoder {
 	return &encoder{
-		w:  msgio.NewWriter(w),
-		mc: c.mc,
+		w:   msgio.NewWriter(w),
+		buf: proto.NewBuffer(nil),
+		mc:  c.mc,
 	}
 }
 
