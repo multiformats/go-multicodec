@@ -1,6 +1,7 @@
 package mc_cbor
 
 import (
+	"reflect"
 	"testing"
 	"testing/quick"
 
@@ -67,8 +68,8 @@ func TestHeaderMC(t *testing.T) {
 func TestRoundtripBasicMC(t *testing.T) {
 	codec := Multicodec(nil)
 	for _, tca := range testCases {
-		var tcb map[string]interface{}
-		mctest.RoundTripTest(t, codec, tca, &tcb)
+		tcb := reflect.New(reflect.TypeOf(tca).Elem()).Interface()
+		mctest.RoundTripTest(t, codec, tca, tcb)
 	}
 }
 
