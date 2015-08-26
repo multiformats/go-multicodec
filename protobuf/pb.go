@@ -32,16 +32,18 @@ func Multicodec(m proto.Message) mc.Multicodec {
 
 func (c *codec) Encoder(w io.Writer) mc.Encoder {
 	return &encoder{
-		w:   msgio.NewWriter(w),
-		buf: proto.NewBuffer(nil),
-		mc:  c.mc,
+		rawW: w,
+		w:    msgio.NewWriter(w),
+		buf:  proto.NewBuffer(nil),
+		mc:   c.mc,
 	}
 }
 
 func (c *codec) Decoder(r io.Reader) mc.Decoder {
 	return &decoder{
-		r:  msgio.NewReader(r),
-		mc: c.mc,
+		rawR: r,
+		r:    msgio.NewReader(r),
+		mc:   c.mc,
 	}
 }
 
@@ -50,20 +52,22 @@ func (c *codec) Header() []byte {
 }
 
 type encoder struct {
-	w   msgio.Writer
-	buf *proto.Buffer
-	mc  bool
+	rawW io.Writer
+	w    msgio.Writer
+	buf  *proto.Buffer
+	mc   bool
 }
 
 type decoder struct {
-	r  msgio.Reader
-	mc bool
+	rawR io.Reader
+	r    msgio.Reader
+	mc   bool
 }
 
 func (c *encoder) Encode(v interface{}) error {
 	// if multicodec, write the header first
 	if c.mc {
-		if _, err := c.w.Write(Header); err != nil {
+		if _, err := c.rawW.Write(Header); err != nil {
 			return err
 		}
 	}
@@ -83,7 +87,7 @@ func (c *encoder) Encode(v interface{}) error {
 func (c *decoder) Decode(v interface{}) error {
 	// if multicodec, consume the header first
 	if c.mc {
-		if err := mc.ConsumeHeader(c.r, Header); err != nil {
+		if err := mc.ConsumeHeader(c.rawR, Header); err != nil {
 			return err
 		}
 	}

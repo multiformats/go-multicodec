@@ -60,7 +60,7 @@ func TestRoundtripCheck(t *testing.T) {
 func TestHeaderMC(t *testing.T) {
 	codec := Multicodec(nil)
 	for _, tc := range testCases {
-		mctest.HeaderTest(t, codec, &tc)
+		mctest.HeaderTest(t, codec, tc)
 	}
 }
 
@@ -68,7 +68,7 @@ func TestRoundtripBasicMC(t *testing.T) {
 	codec := Multicodec(nil)
 	for _, tca := range testCases {
 		var tcb map[string]interface{}
-		mctest.RoundTripTest(t, codec, &tca, &tcb)
+		mctest.RoundTripTest(t, codec, tca, &tcb)
 	}
 }
 

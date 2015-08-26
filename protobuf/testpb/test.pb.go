@@ -22,11 +22,10 @@ var _ = proto.Marshal
 var _ = math.Inf
 
 type Foo struct {
-	A                *int32  `protobuf:"varint,1,opt,name=a" json:"a,omitempty"`
-	B                *int32  `protobuf:"varint,2,req,name=b" json:"b,omitempty"`
-	C                []int32 `protobuf:"varint,3,rep,name=c" json:"c,omitempty"`
-	D                *int32  `protobuf:"varint,4,opt,name=d" json:"d,omitempty"`
-	XXX_unrecognized []byte  `json:"-"`
+	A *int32  `protobuf:"varint,1,opt,name=a" json:"a,omitempty"`
+	B *int32  `protobuf:"varint,2,req,name=b" json:"b,omitempty"`
+	C []int32 `protobuf:"varint,3,rep,name=c" json:"c,omitempty"`
+	D *int32  `protobuf:"varint,4,opt,name=d" json:"d,omitempty"`
 }
 
 func (m *Foo) Reset()         { *m = Foo{} }
@@ -62,10 +61,9 @@ func (m *Foo) GetD() int32 {
 }
 
 type Bar struct {
-	Foos             []*Foo   `protobuf:"bytes,1,rep,name=foos" json:"foos,omitempty"`
-	Strs             []string `protobuf:"bytes,2,rep,name=strs" json:"strs,omitempty"`
-	Bufs             [][]byte `protobuf:"bytes,3,rep,name=bufs" json:"bufs,omitempty"`
-	XXX_unrecognized []byte   `json:"-"`
+	Foos []*Foo   `protobuf:"bytes,1,rep,name=foos" json:"foos,omitempty"`
+	Strs []string `protobuf:"bytes,2,rep,name=strs" json:"strs,omitempty"`
+	Bufs [][]byte `protobuf:"bytes,3,rep,name=bufs" json:"bufs,omitempty"`
 }
 
 func (m *Bar) Reset()         { *m = Bar{} }
