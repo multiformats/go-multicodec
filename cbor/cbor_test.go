@@ -36,7 +36,7 @@ func init() {
 type TestType map[string]string
 
 func TestRoundtripBasic(t *testing.T) {
-	codec := Codec(nil)
+	codec := Codec()
 	for _, tca := range testCases {
 		var tcb map[string]interface{}
 		mctest.RoundTripTest(t, codec, &tca, &tcb)
@@ -44,7 +44,7 @@ func TestRoundtripBasic(t *testing.T) {
 }
 
 func TestRoundtripCheck(t *testing.T) {
-	codec := Codec(nil)
+	codec := Codec()
 	f := func(o1 TestType) bool {
 		var o2 TestType
 		return mctest.RoundTripTest(t, codec, &o1, &o2)
@@ -55,14 +55,14 @@ func TestRoundtripCheck(t *testing.T) {
 }
 
 func TestHeaderMC(t *testing.T) {
-	codec := Multicodec(nil)
+	codec := Multicodec()
 	for _, tc := range testCases {
 		mctest.HeaderTest(t, codec, &tc)
 	}
 }
 
 func TestRoundtripBasicMC(t *testing.T) {
-	codec := Multicodec(nil)
+	codec := Multicodec()
 	for _, tca := range testCases {
 		var tcb map[string]interface{}
 		mctest.RoundTripTest(t, codec, &tca, &tcb)
@@ -70,7 +70,7 @@ func TestRoundtripBasicMC(t *testing.T) {
 }
 
 func TestRoundtripCheckMC(t *testing.T) {
-	codec := Multicodec(nil)
+	codec := Multicodec()
 	f := func(o1 TestType) bool {
 		var o2 TestType
 		return mctest.RoundTripTest(t, codec, &o1, &o2)
