@@ -51,6 +51,7 @@ func TestRoundtripCheck(t *testing.T) {
 	codec := Codec(nil)
 	f := func(o1 pb.Bar) bool {
 		var o2 pb.Bar
+		o1 = fixObj(o1)
 		return mctest.RoundTripTest(t, codec, &o1, &o2)
 	}
 	if err := quick.Check(f, nil); err != nil {
@@ -77,9 +78,21 @@ func TestRoundtripCheckMC(t *testing.T) {
 	codec := Multicodec(nil)
 	f := func(o1 pb.Bar) bool {
 		var o2 pb.Bar
+		o1 = fixObj(o1)
 		return mctest.RoundTripTest(t, codec, &o1, &o2)
 	}
 	if err := quick.Check(f, nil); err != nil {
 		t.Error(err)
 	}
+}
+
+func fixObj(o pb.Bar) pb.Bar {
+	var goodfoos []*pb.Foo
+	for _, f := range o.GetFoos() {
+		if f != nil {
+			goodfoos = append(goodfoos, f)
+		}
+	}
+	o.Foos = goodfoos
+	return o
 }

@@ -23,7 +23,7 @@ var _ = math.Inf
 
 type Foo struct {
 	A *int32  `protobuf:"varint,1,opt,name=a" json:"a,omitempty"`
-	B *int32  `protobuf:"varint,2,req,name=b" json:"b,omitempty"`
+	B *int32  `protobuf:"varint,2,opt,name=b" json:"b,omitempty"`
 	C []int32 `protobuf:"varint,3,rep,name=c" json:"c,omitempty"`
 	D *int32  `protobuf:"varint,4,opt,name=d" json:"d,omitempty"`
 }
