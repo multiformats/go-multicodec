@@ -1,52 +1,35 @@
 package mc_json
 
 import (
+	"encoding/json"
 	"io"
-
-	ugcodec "github.com/ugorji/go/codec"
 
 	mc "github.com/jbenet/go-multicodec"
 )
 
 var Header []byte
-var DefaultHandle *ugcodec.JsonHandle
 
 func init() {
 	Header = mc.Header([]byte("/json"))
-	DefaultHandle = &ugcodec.JsonHandle{}
-	DefaultHandle.Canonical = true
 }
 
 type codec struct {
-	Handle *ugcodec.JsonHandle
-	mc     bool
+	mc bool
 }
 
-func Codec(h *ugcodec.JsonHandle) mc.Codec {
-	if h == nil {
-		h = DefaultHandle
-	}
-	return &codec{
-		Handle: h,
-		mc:     false,
-	}
+func Codec() mc.Codec {
+	return &codec{mc: false}
 }
 
-func Multicodec(h *ugcodec.JsonHandle) mc.Multicodec {
-	if h == nil {
-		h = DefaultHandle
-	}
-	return &codec{
-		Handle: h,
-		mc:     true,
-	}
+func Multicodec() mc.Multicodec {
+	return &codec{mc: true}
 }
 
 func (c *codec) Encoder(w io.Writer) mc.Encoder {
 	return &encoder{
 		w:   w,
 		mc:  c.mc,
-		enc: ugcodec.NewEncoder(w, c.Handle),
+		enc: json.NewEncoder(w),
 	}
 }
 
@@ -54,7 +37,7 @@ func (c *codec) Decoder(r io.Reader) mc.Decoder {
 	return &decoder{
 		r:   r,
 		mc:  c.mc,
-		dec: ugcodec.NewDecoder(r, c.Handle),
+		dec: json.NewDecoder(r),
 	}
 }
 
@@ -65,13 +48,13 @@ func (c *codec) Header() []byte {
 type encoder struct {
 	w   io.Writer
 	mc  bool
-	enc *ugcodec.Encoder
+	enc *json.Encoder
 }
 
 type decoder struct {
 	r   io.Reader
 	mc  bool
-	dec *ugcodec.Decoder
+	dec *json.Decoder
 }
 
 func (c *encoder) Encode(v interface{}) error {
