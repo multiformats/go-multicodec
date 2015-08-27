@@ -3,42 +3,30 @@ package mc_cbor
 import (
 	"io"
 
-	ugcodec "github.com/ugorji/go/codec"
+	cbor "github.com/whyrusleeping/cbor/go"
 
 	mc "github.com/jbenet/go-multicodec"
 )
 
 var Header []byte
-var DefaultHandle *ugcodec.CborHandle
 
 func init() {
 	Header = mc.Header([]byte("/cbor"))
-	DefaultHandle = &ugcodec.CborHandle{}
-	DefaultHandle.Canonical = true
 }
 
 type codec struct {
-	Handle *ugcodec.CborHandle
-	mc     bool
+	mc bool
 }
 
-func Codec(h *ugcodec.CborHandle) mc.Codec {
-	if h == nil {
-		h = DefaultHandle
-	}
+func Codec() mc.Codec {
 	return &codec{
-		Handle: h,
-		mc:     false,
+		mc: false,
 	}
 }
 
-func Multicodec(h *ugcodec.CborHandle) mc.Multicodec {
-	if h == nil {
-		h = DefaultHandle
-	}
+func Multicodec() mc.Multicodec {
 	return &codec{
-		Handle: h,
-		mc:     true,
+		mc: true,
 	}
 }
 
@@ -46,7 +34,7 @@ func (c *codec) Encoder(w io.Writer) mc.Encoder {
 	return &encoder{
 		w:   w,
 		mc:  c.mc,
-		enc: ugcodec.NewEncoder(w, c.Handle),
+		enc: cbor.NewEncoder(w),
 	}
 }
 
@@ -54,7 +42,7 @@ func (c *codec) Decoder(r io.Reader) mc.Decoder {
 	return &decoder{
 		r:   r,
 		mc:  c.mc,
-		dec: ugcodec.NewDecoder(r, c.Handle),
+		dec: cbor.NewDecoder(r),
 	}
 }
 
@@ -65,13 +53,13 @@ func (c *codec) Header() []byte {
 type encoder struct {
 	w   io.Writer
 	mc  bool
-	enc *ugcodec.Encoder
+	enc *cbor.Encoder
 }
 
 type decoder struct {
 	r   io.Reader
 	mc  bool
-	dec *ugcodec.Decoder
+	dec *cbor.Decoder
 }
 
 func (c *encoder) Encode(v interface{}) error {
