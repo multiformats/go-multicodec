@@ -33,7 +33,7 @@ func init() {
 	testCases = []interface{}{tc1, tc2, tc3}
 }
 
-type TestType map[string]string
+type TestType map[string]map[string]string
 
 func TestRoundtripBasic(t *testing.T) {
 	codec := Codec()
