@@ -7,6 +7,7 @@ import (
 )
 
 var (
+	ErrType          = errors.New("multicodec type error")
 	ErrHeaderInvalid = errors.New("multicodec header invalid")
 	ErrMismatch      = errors.New("multicodec did not match")
 	ErrVarints       = errors.New("multicodec varints not yet implemented")
