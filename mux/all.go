@@ -9,6 +9,7 @@ import (
 func StandardMux() *Multicodec {
 	return MuxMulticodec([]mc.Multicodec{
 		cbor.Multicodec(),
-		json.Multicodec(),
+		json.Multicodec(false),
+		json.Multicodec(true),
 	}, SelectFirst)
 }
