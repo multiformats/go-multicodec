@@ -81,11 +81,17 @@ func (c *encoder) Encode(v interface{}) error {
 		w = msgio.NewWriter(w)
 	}
 
-	if err := c.enc.Encode(v); err != nil {
+	// recast to deal with map[interface{}]interface{} case
+	vr, err := recast(v)
+	if err != nil {
 		return err
 	}
 
-	_, err := io.Copy(w, c.buf)
+	if err := c.enc.Encode(vr); err != nil {
+		return err
+	}
+
+	_, err = io.Copy(w, c.buf)
 	return err
 }
 
@@ -108,4 +114,28 @@ func (c *decoder) Decode(v interface{}) error {
 	}
 
 	return json.NewDecoder(r).Decode(v)
+}
+
+func recast(v interface{}) (cv interface{}, err error) {
+	switch v.(type) {
+	case map[interface{}]interface{}:
+		vmi := v.(map[interface{}]interface{})
+		vms := make(map[string]interface{}, len(vmi))
+		for k, v2 := range vmi {
+			ks, ok := k.(string)
+			if !ok {
+				return v, mc.ErrType
+			}
+
+			rv2, err := recast(v2)
+			if err != nil {
+				return v, err
+			}
+
+			vms[ks] = rv2
+		}
+		return vms, nil
+	default:
+		return v, nil // hope for the best.
+	}
 }
