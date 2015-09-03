@@ -35,13 +35,14 @@ func MuxMulticodec(codecs []mc.Multicodec, sel SelectCodec) *Multicodec {
 	if sel == nil {
 		sel = SelectFirst
 	}
-	return &Multicodec{codecs, sel, true}
+	return &Multicodec{codecs, sel, true, nil}
 }
 
 type Multicodec struct {
-	Codecs []mc.Multicodec
-	Select SelectCodec
-	Wrap   bool // whether to wrap with own header
+	Codecs []mc.Multicodec // subcodecs to use
+	Select SelectCodec     // pick a subcodec for encoding
+	Wrap   bool            // whether to wrap with own header
+	Last   mc.Multicodec   // the last subcodec used
 }
 
 func (c *Multicodec) Encoder(w io.Writer) mc.Encoder {
@@ -78,6 +79,7 @@ func (c *encoder) Encode(v interface{}) error {
 		}
 	}
 
+	c.c.Last = subc
 	return subc.Encoder(c.w).Encode(v)
 }
 
@@ -97,13 +99,22 @@ func (c *decoder) Decode(v interface{}) error {
 	// "unwind" the read as subc consumes header
 	r := mc.WrapHeaderReader(hdr, c.r)
 
-	// we'll look through the list. should be small.
-	// if huge, consider a map.
-	for _, subc := range c.c.Codecs {
-		if bytes.Equal(hdr, subc.Header()) {
-			return subc.Decoder(r).Decode(v)
-		}
+	subc := CodecWithHeader(hdr, c.c.Codecs)
+	if subc == nil {
+		return fmt.Errorf("no codec for %s", hdr)
 	}
 
-	return fmt.Errorf("no codec for %s", hdr)
+	c.c.Last = subc
+	return subc.Decoder(r).Decode(v)
+}
+
+func CodecWithHeader(hdr []byte, codecs []mc.Multicodec) mc.Multicodec {
+	// we'll look through the list. should be small.
+	// if huge, consider a map.
+	for _, c := range codecs {
+		if bytes.Equal(hdr, c.Header()) {
+			return c
+		}
+	}
+	return nil
 }
