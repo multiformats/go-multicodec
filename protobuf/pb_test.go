@@ -36,7 +36,7 @@ func init() {
 	tc4.Strs = []string{"aaa", "bbb", "ccc"}
 	tc4.Bufs = [][]byte{[]byte("aaa"), []byte("bbb"), []byte("ccc")}
 
-	testCases = []interface{}{tc3}
+	testCases = []interface{}{tc3, tc4}
 }
 
 func TestRoundtripBasic(t *testing.T) {

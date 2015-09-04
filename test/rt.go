@@ -16,6 +16,7 @@ func RoundTripTest(t *testing.T, codec mc.Codec, o1, o2 interface{}) bool {
 	}
 
 	if err := mc.Unmarshal(codec, m1, o2); err != nil {
+		t.Log(m1)
 		t.Error(err)
 		return false
 	}

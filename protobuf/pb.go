@@ -11,65 +11,72 @@ import (
 )
 
 var Header []byte
+var HeaderMsgio []byte
 
 var ErrNotProtobuf = errors.New("not a protobuf")
 
 func init() {
-	Header = mc.Header([]byte("/protobuf/msgio"))
+	Header = mc.Header([]byte("/protobuf"))
+	HeaderMsgio = mc.Header([]byte("/protobuf/msgio"))
 }
 
 type codec struct {
-	mc bool
+	mc    bool
+	msgio bool
 }
 
 func Codec(m proto.Message) mc.Codec {
-	return &codec{mc: false}
+	return &codec{mc: false, msgio: true} // cannot do without atm.
 }
 
 func Multicodec(m proto.Message) mc.Multicodec {
-	return &codec{mc: true}
+	return &codec{mc: true, msgio: true} // cannot do without atm.
 }
 
 func (c *codec) Encoder(w io.Writer) mc.Encoder {
 	return &encoder{
-		rawW: w,
-		w:    msgio.NewWriter(w),
-		buf:  proto.NewBuffer(nil),
-		mc:   c.mc,
+		w:   w,
+		buf: proto.NewBuffer(nil),
+		c:   c,
 	}
 }
 
 func (c *codec) Decoder(r io.Reader) mc.Decoder {
 	return &decoder{
-		rawR: r,
-		r:    msgio.NewReader(r),
-		mc:   c.mc,
+		r: r,
+		c: c,
 	}
 }
 
 func (c *codec) Header() []byte {
+	if c.msgio {
+		return HeaderMsgio
+	}
 	return Header
 }
 
 type encoder struct {
-	rawW io.Writer
-	w    msgio.Writer
-	buf  *proto.Buffer
-	mc   bool
+	w   io.Writer
+	buf *proto.Buffer
+	c   *codec
 }
 
 type decoder struct {
-	rawR io.Reader
-	r    msgio.Reader
-	mc   bool
+	r io.Reader
+	c *codec
 }
 
 func (c *encoder) Encode(v interface{}) error {
-	// if multicodec, write the header first
-	if c.mc {
-		if _, err := c.rawW.Write(Header); err != nil {
+	w := c.w
+
+	if c.c.mc {
+		// if multicodec, write the header first
+		if _, err := c.w.Write(c.c.Header()); err != nil {
 			return err
 		}
+	}
+	if c.c.msgio {
+		w = msgio.NewWriter(w)
 	}
 
 	pbv, ok := v.(proto.Message)
@@ -81,26 +88,31 @@ func (c *encoder) Encode(v interface{}) error {
 	if err := c.buf.Marshal(pbv); err != nil {
 		return err
 	}
-	return c.w.WriteMsg(c.buf.Bytes())
+
+	_, err := w.Write(c.buf.Bytes())
+	return err
 }
 
 func (c *decoder) Decode(v interface{}) error {
-	// if multicodec, consume the header first
-	if c.mc {
-		if err := mc.ConsumeHeader(c.rawR, Header); err != nil {
-			return err
-		}
-	}
-
 	pbv, ok := v.(proto.Message)
 	if !ok {
 		return ErrNotProtobuf
 	}
 
-	buf, err := c.r.ReadMsg()
-	if err != nil {
-		return err
+	if c.c.mc {
+		// if multicodec, consume the header first
+		if err := mc.ConsumeHeader(c.r, c.c.Header()); err != nil {
+			return err
+		}
 	}
 
-	return proto.Unmarshal(buf, pbv)
+	if c.c.msgio {
+		msg, err := msgio.NewReader(c.r).ReadMsg()
+		if err != nil {
+			return err
+		}
+		return proto.Unmarshal(msg, pbv)
+	}
+
+	return errors.New("protobuf without msgio not supported yet")
 }
