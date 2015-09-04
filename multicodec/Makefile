@@ -8,10 +8,12 @@ install:
 examples: build
 	cat examples/one.json | ./multicodec recode /cbor >examples/one.cbor
 	cat examples/many.json | ./multicodec recode /cbor >examples/many.cbor
+
 	cat examples/one.json >examples/four.mixed
 	cat examples/one.cbor >>examples/four.mixed
 	cat examples/one.json >>examples/four.mixed
 	cat examples/one.cbor >>examples/four.mixed
+
 	cat examples/four.mixed | ./multicodec recode /json >examples/four.unmixed.json
 	cat examples/four.mixed | ./multicodec recode /cbor >examples/four.unmixed.cbor
 	cat examples/four.mixed | ./multicodec headers >examples/four.headers

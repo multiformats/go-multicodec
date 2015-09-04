@@ -29,8 +29,9 @@ type FlagType struct {
 }
 
 func (f *FlagType) Arg(i int) string {
-	if len(f.Args) < (i + 1) {
-		flag.Usage()
+	n := i + 1
+	if len(f.Args) < n {
+		die(fmt.Sprintf("expected %d argument(s)", n))
 	}
 	return f.Args[i]
 }
@@ -77,10 +78,14 @@ func init() {
 	}
 }
 
+func die(err string) {
+	fmt.Fprintf(os.Stderr, "error: %s\n", err)
+	os.Exit(-1)
+}
+
 func main() {
 	if err := run(); err != nil {
-		fmt.Fprintf(os.Stderr, "error: %s\n", err)
-		os.Exit(-1)
+		die(err.Error())
 	}
 }
 
