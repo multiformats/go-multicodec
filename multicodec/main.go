@@ -39,31 +39,31 @@ var usage = `
 multicodec - tool to inspect and manipulate mixed codec streams
 
 Usage
-  cat rawjson | multicodec wrap /json/msgio >mcjson
-  cat rawcbor | multicodec wrap /cbor >mccbor
+    cat rawjson | multicodec wrap /json/msgio >mcjson
+    cat rawcbor | multicodec wrap /cbor >mccbor
 
-  cat mixed | multicodec recode /json/msgio >all_in_json
-  cat mixed | multicodec filter /json/msgio >json_ones_only
+    cat mixed | multicodec recode /json/msgio >all_in_json
+    cat mixed | multicodec filter /json/msgio >json_ones_only
 
-  cat mixed | multicodec headers >all_headers
-  cat mixed | multicodec paths >all_paths
+    cat mixed | multicodec headers >all_headers
+    cat mixed | multicodec paths >all_paths
 
-  cat paths   | multicodec p2h >headers
-  cat headers | multicodec h2p >paths
+    cat paths   | multicodec p2h >headers
+    cat headers | multicodec h2p >paths
 
 Commands
-	filter <path>   filter items of given codec
-	recode <path>   recode items to given codec
-	wrap   <path>   wrap raw data with header
+    filter <path>   filter items of given codec
+    recode <path>   recode items to given codec
+    wrap   <path>   wrap raw data with header
 
-  headers         output only items' headers
-  paths           output only items' header paths
-  h2p             convert headers to line-delimited paths
-  p2h             convert line-delimited paths to headers
+    headers         output only items' headers
+    paths           output only items' header paths
+    h2p             convert headers to line-delimited paths
+    p2h             convert line-delimited paths to headers
 
 Options
-  --mcwrap        item headers wrapped with /multicodec
-  --msgio         wrap all subcodecs with /msgio
+    --mcwrap        item headers wrapped with /multicodec
+    --msgio         wrap all subcodecs with /msgio
 `
 
 func init() {
@@ -87,7 +87,7 @@ func main() {
 func argParse() {
 	flag.Parse()
 
-	if len(flag.Args()) > 2 {
+	if l := len(flag.Args()); l < 1 || l > 2 {
 		flag.Usage()
 	}
 
