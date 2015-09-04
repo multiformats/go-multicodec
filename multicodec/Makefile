@@ -20,3 +20,7 @@ examples: build
 	cat examples/four.mixed | ./multicodec paths >examples/four.paths
 	cat examples/four.headers | ./multicodec h2p >examples/four.paths2
 	cat examples/four.paths | ./multicodec p2h >examples/four.headers2
+
+	./multicodec header /json >examples/json_header
+	./multicodec header /protobuf/msgio >examples/pb_header
+	./multicodec header /multicodec/cbor >examples/cbor_header

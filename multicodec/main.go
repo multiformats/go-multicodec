@@ -52,10 +52,14 @@ Usage
     cat paths   | multicodec p2h >headers
     cat headers | multicodec h2p >paths
 
+    multicodec header /json >json_header
+    multicodec header /protobuf/msgio >pb_header
+
 Commands
     filter <path>   filter items of given codec
     recode <path>   recode items to given codec
     wrap   <path>   wrap raw data with header
+    header <path>   make a header of given size
 
     headers         output only items' headers
     paths           output only items' header paths
@@ -107,6 +111,8 @@ func run() error {
 	r := os.Stdin
 
 	switch Flags.Command {
+	case "header":
+		return header(w, Flags.Arg(0))
 	case "headers":
 		return headers(w, r)
 	case "paths":
@@ -166,6 +172,11 @@ func p2h(w io.Writer, r io.Reader) error {
 			return err
 		}
 	}
+}
+
+func header(w io.Writer, path string) error {
+	_, err := w.Write(mc.Header([]byte(path)))
+	return err
 }
 
 func headers(w io.Writer, r io.Reader) error {
