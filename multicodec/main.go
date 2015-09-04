@@ -19,63 +19,58 @@ import (
 var Flags FlagType
 
 type FlagType struct {
-	Recode string
-	Filter string
-	Wrap   string
+	Command string
+	Args    []string
 
 	Msgio   bool
 	MCWrap  bool
 	Headers bool
 	Paths   bool
+}
 
-	P2H bool
-	H2P bool
+func (f *FlagType) Arg(i int) string {
+	if len(f.Args) < (i + 1) {
+		flag.Usage()
+	}
+	return f.Args[i]
 }
 
 var usage = `
 multicodec - tool to inspect and manipulate mixed codec streams
 
 Usage
-  cat rawjson | multicodec --wrap /json/msgio >mcjson
-  cat rawcbor | multicodec --wrap /cbor >mccbor
+  cat rawjson | multicodec wrap /json/msgio >mcjson
+  cat rawcbor | multicodec wrap /cbor >mccbor
 
-  cat mixed | multicodec -r /json/msgio >all_in_json
-  cat mixed | multicodec -f /json/msgio >json_ones_only
+  cat mixed | multicodec recode /json/msgio >all_in_json
+  cat mixed | multicodec filter /json/msgio >json_ones_only
 
-  cat mixed | multicodec --headers >all_headers
-  cat mixed | multicodec --paths >all_paths
+  cat mixed | multicodec headers >all_headers
+  cat mixed | multicodec paths >all_paths
 
-  cat paths   | multicodec --p2h >headers
-  cat headers | multicodec --h2p >paths
+  cat paths   | multicodec p2h >headers
+  cat headers | multicodec h2p >paths
+
+Commands
+	filter <path>   filter items of given codec
+	recode <path>   recode items to given codec
+	wrap   <path>   wrap raw data with header
+
+  headers         output only items' headers
+  paths           output only items' header paths
+  h2p             convert headers to line-delimited paths
+  p2h             convert line-delimited paths to headers
 
 Options
-  -f, --filter    filter items of given codec
-  -r, --recode    recode items to given codec
-  -w, --wrap      wrap raw data with header
-
   --mcwrap        item headers wrapped with /multicodec
   --msgio         wrap all subcodecs with /msgio
-
-  --headers       output only items' headers
-  --paths         output only items' header paths
-
-  --h2p           convert headers to line-delimited paths
-  --p2h           convert line-delimited paths to headers
 `
 
 func init() {
-	flag.StringVar(&Flags.Recode, "r", "", "recode items to given codec")
-	flag.StringVar(&Flags.Recode, "recode", "", "recode items to given codec")
-	flag.StringVar(&Flags.Recode, "f", "", "filter items of given codec")
-	flag.StringVar(&Flags.Recode, "filter", "", "filter items of given codec")
-	flag.StringVar(&Flags.Wrap, "w", "", "wrap raw data with header")
-	flag.StringVar(&Flags.Wrap, "wrap", "", "wrap raw data with header")
 	flag.BoolVar(&Flags.MCWrap, "mcwrap", false, "items headers wrapped with /multicodec")
 	flag.BoolVar(&Flags.Msgio, "msgio", false, "wrap all subcodecs with /msgio")
 	flag.BoolVar(&Flags.Headers, "headers", false, "output only the headers")
 	flag.BoolVar(&Flags.Paths, "paths", false, "output only the header paths")
-	flag.BoolVar(&Flags.P2H, "p2h", false, "paths to headers")
-	flag.BoolVar(&Flags.H2P, "h2p", false, "headers to paths")
 	flag.Usage = func() {
 		fmt.Println(strings.TrimSpace(usage))
 		os.Exit(0)
@@ -89,26 +84,37 @@ func main() {
 	}
 }
 
-func run() error {
+func argParse() {
 	flag.Parse()
+
+	if len(flag.Args()) > 2 {
+		flag.Usage()
+	}
+
+	Flags.Command = flag.Args()[0]
+	Flags.Args = flag.Args()[1:]
+}
+
+func run() error {
+	argParse()
 
 	w := os.Stdout
 	r := os.Stdin
 
-	switch {
-	case Flags.Headers:
+	switch Flags.Command {
+	case "headers":
 		return headers(w, r)
-	case Flags.Paths:
+	case "paths":
 		return paths(w, r)
-	case Flags.Wrap != "":
-		return wrap(w, r, Flags.Wrap)
-	case Flags.Filter != "":
-		return filter(w, r, Flags.Filter)
-	case Flags.Recode != "":
-		return recode(w, r, Flags.Recode)
-	case Flags.H2P:
+	case "wrap":
+		return wrap(w, r, Flags.Arg(0))
+	case "filter":
+		return filter(w, r, Flags.Arg(0))
+	case "recode":
+		return recode(w, r, Flags.Arg(0))
+	case "h2p":
 		return h2p(w, r)
-	case Flags.P2H:
+	case "p2h":
 		return p2h(w, r)
 	default:
 		flag.Usage()
