@@ -8,10 +8,12 @@ import (
 	mc "github.com/jbenet/go-multicodec"
 )
 
+var HeaderPath string
 var Header []byte
 
 func init() {
-	Header = mc.Header([]byte("/cbor"))
+	HeaderPath = "/cbor"
+	Header = mc.Header([]byte(HeaderPath))
 }
 
 type codec struct {

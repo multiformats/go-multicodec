@@ -10,12 +10,16 @@ import (
 	mc "github.com/jbenet/go-multicodec"
 )
 
+var HeaderPath string
 var Header []byte
+var HeaderMsgioPath string
 var HeaderMsgio []byte
 
 func init() {
-	Header = mc.Header([]byte("/json"))
-	HeaderMsgio = mc.Header([]byte("/json/msgio"))
+	HeaderPath = "/json"
+	HeaderMsgioPath = "/json/msgio"
+	Header = mc.Header([]byte(HeaderPath))
+	HeaderMsgio = mc.Header([]byte(HeaderMsgioPath))
 }
 
 type codec struct {
