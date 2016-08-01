@@ -1,4 +1,4 @@
-package mc_cbor
+package mc_pb
 
 import (
 	"errors"
