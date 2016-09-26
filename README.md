@@ -17,8 +17,8 @@ import (
   "os"
   "io"
 
-  cbor "github.com/jbenet/go-multicodec/cbor"
-  json "github.com/jbenet/go-multicodec/json"
+  cbor "github.com/multiformats/go-multicodec/cbor"
+  json "github.com/multiformats/go-multicodec/json"
 )
 
 func main() {

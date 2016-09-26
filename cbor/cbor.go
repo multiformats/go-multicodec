@@ -5,7 +5,7 @@ import (
 
 	cbor "github.com/whyrusleeping/cbor/go"
 
-	mc "github.com/jbenet/go-multicodec"
+	mc "github.com/multiformats/go-multicodec"
 )
 
 var HeaderPath string

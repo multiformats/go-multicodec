@@ -4,7 +4,7 @@ import (
 	"testing"
 	"testing/quick"
 
-	mctest "github.com/jbenet/go-multicodec/test"
+	mctest "github.com/multiformats/go-multicodec/test"
 )
 
 var testCases []interface{}
