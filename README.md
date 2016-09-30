@@ -1,4 +1,4 @@
-# go-multicodec - [multicodec](https://github.com/jbenet/multicodec) in Go
+# go-multicodec - [multicodec](https://github.com/multiformats/multicodec) in Go
 
 self-describing serialization. This is a Golang implementation of https://github.com/jbenet/multicodec
 
