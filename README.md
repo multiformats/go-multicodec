@@ -25,7 +25,7 @@ This is the [multicodec](https://github.com/multiformats/multicodec) implementat
 ## Install
 
 ```sh
-go get multiformats/go-multicodec
+go get github.com/multiformats/go-multicodec
 ```
 
 ## Usage
