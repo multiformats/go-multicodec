@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	HeaderPath = "/base16"
+	HeaderPath = "/base16/"
 	Header     = mc.Header([]byte(HeaderPath))
 	multic     = mc.NewMulticodecFromCodec(Codec(), Header)
 )

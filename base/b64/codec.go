@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	HeaderPath = "/base64"
+	HeaderPath = "/base64/"
 	Header     = mc.Header([]byte(HeaderPath))
 	multic     = mc.NewMulticodecFromCodec(Codec(), Header)
 )

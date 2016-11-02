@@ -10,9 +10,11 @@ import (
 )
 
 func AllBasesMux() *mux.Multicodec {
-	return mux.MuxMulticodec([]mc.Multicodec{
+	m := mux.MuxMulticodec([]mc.Multicodec{
 		hex.Multicodec(),
 		b64.Multicodec(),
 		bin.Multicodec(),
 	}, mux.SelectFirst)
+	m.Wrap = false
+	return m
 }

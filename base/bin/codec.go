@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	HeaderPath = "/bin"
+	HeaderPath = "/bin/"
 	Header     = mc.Header([]byte(HeaderPath))
 	multic     = mc.NewMulticodecFromCodec(Codec(), Header)
 )
