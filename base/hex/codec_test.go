@@ -7,7 +7,7 @@ import (
 	mc "github.com/multiformats/go-multicodec"
 )
 
-func TestBinaryDecoding(t *testing.T) {
+func TestHexDecoding(t *testing.T) {
 	bufIn := bytes.Buffer{}
 	bufIn.Write(Multicodec().Header())
 	dataIn := []byte{255, 255}
@@ -24,7 +24,7 @@ func TestBinaryDecoding(t *testing.T) {
 	}
 }
 
-func TestBinaryEncoding(t *testing.T) {
+func TestHexEncoding(t *testing.T) {
 	buf := bytes.Buffer{}
 	data := []byte("ffff")
 
