@@ -4,7 +4,7 @@ import (
 	"errors"
 	"io"
 
-	proto "github.com/golang/protobuf/proto"
+	proto "github.com/gogo/protobuf/proto"
 	msgio "github.com/jbenet/go-msgio"
 
 	mc "github.com/multiformats/go-multicodec"
