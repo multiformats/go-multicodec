@@ -6,7 +6,7 @@ import (
 
 	msgio "github.com/jbenet/go-msgio"
 
-	mc "github.com/jbenet/go-multicodec"
+	mc "github.com/multiformats/go-multicodec"
 )
 
 var Header []byte

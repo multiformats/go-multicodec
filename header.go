@@ -1,6 +1,7 @@
 package multicodec
 
 import (
+	"bufio"
 	"bytes"
 	"errors"
 	"io"
@@ -15,16 +16,25 @@ var (
 
 // Header returns a multicodec header with the given path.
 func Header(path []byte) []byte {
+	b, err := HeaderSafe(path)
+	if err != nil {
+		panic(err.Error)
+	}
+	return b
+}
+
+// HeaderSafe works like Header but it returns error instead of calling panic
+func HeaderSafe(path []byte) ([]byte, error) {
 	l := len(path) + 1 // + \n
 	if l >= 127 {
-		panic(ErrVarints.Error())
+		return nil, ErrVarints
 	}
 
 	buf := make([]byte, l+1)
 	buf[0] = byte(l)
 	copy(buf[1:], path)
 	buf[l] = '\n'
-	return buf
+	return buf, nil
 }
 
 // HeaderPath returns the multicodec path from header
@@ -112,4 +122,19 @@ func ConsumeHeader(r io.Reader, header []byte) (err error) {
 // needed to pass to a decoder.
 func WrapHeaderReader(hdr []byte, r io.Reader) io.Reader {
 	return io.MultiReader(bytes.NewReader(hdr), r)
+}
+
+func WrapTransformPathToHeader(r io.Reader) (io.Reader, error) {
+	br := bufio.NewReader(r)
+
+	p, err := br.ReadBytes('\n')
+	if err != nil {
+		return nil, err
+	}
+	p = p[:len(p)-1] // drop newline
+	hdr, err := HeaderSafe(p)
+	if err != nil {
+		return nil, err
+	}
+	return WrapHeaderReader(hdr, br), nil
 }
