@@ -20,18 +20,22 @@ type decoder struct {
 	r io.Reader
 }
 
+func (d decoder) Read(b []byte) (int, error) {
+	encoded := make([]byte, hex.EncodedLen(len(b)))
+	n, err := d.r.Read(encoded)
+	if err != nil {
+		return 0, err
+	}
+	return hex.Decode(b, encoded[:n])
+}
+
 func (d decoder) Decode(v interface{}) error {
-	out, ok := v.([]byte)
+	out, ok := v.(io.Writer)
 	if !ok {
-		return base.ErrExpectedByteSlice
+		return base.ErrExpectedWriter
 	}
 
-	buf := make([]byte, hex.EncodedLen(len(out)))
-	_, err := d.r.Read(buf)
-	if err != nil {
-		return err
-	}
-	_, err = hex.Decode(out, buf)
+	_, err := io.Copy(out, d)
 	return err
 }
 
@@ -43,16 +47,19 @@ type encoder struct {
 	w io.Writer
 }
 
+func (e encoder) Write(b []byte) (int, error) {
+	encoded := make([]byte, hex.EncodedLen(len(b)))
+	hex.Encode(encoded, b)
+	n, err := e.w.Write(encoded)
+	return n / 2, err
+}
+
 func (e encoder) Encode(v interface{}) error {
-	slice, ok := v.([]byte)
+	in, ok := v.(io.Reader)
 	if !ok {
-		return base.ErrExpectedByteSlice
+		return base.ErrExpectedReader
 	}
-
-	buf := make([]byte, hex.EncodedLen(len(slice)))
-	hex.Encode(buf, slice)
-
-	_, err := e.w.Write(buf)
+	_, err := io.Copy(e, in)
 	return err
 }
 

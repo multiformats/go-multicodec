@@ -13,14 +13,14 @@ func TestB64Decoding(t *testing.T) {
 	dataIn := []byte{255, 255}
 	bufIn.Write([]byte("//8="))
 
-	dataOut := make([]byte, len(dataIn))
-	err := Multicodec().Decoder(&bufIn).Decode(dataOut)
+	dataW := new(bytes.Buffer)
+	err := Multicodec().Decoder(&bufIn).Decode(dataW)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	if !bytes.Equal(dataIn, dataOut) {
-		t.Fatalf("dataOut(%v) is not eqal to dataIn(%v)", dataOut, dataIn)
+	if !bytes.Equal(dataIn, dataW.Bytes()) {
+		t.Fatalf("dataOut(%v) is not eqal to dataIn(%v)", dataW.Bytes(), dataIn)
 	}
 }
 
@@ -28,7 +28,7 @@ func TestB64Encoding(t *testing.T) {
 	buf := bytes.Buffer{}
 	data := []byte("//8=")
 
-	err := Multicodec().Encoder(&buf).Encode([]byte{255, 255})
+	err := Multicodec().Encoder(&buf).Encode(bytes.NewReader([]byte{255, 255}))
 	if err != nil {
 		t.Fatal(err)
 	}

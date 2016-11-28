@@ -21,13 +21,12 @@ type decoder struct {
 }
 
 func (d decoder) Decode(v interface{}) error {
-	out, ok := v.([]byte)
+	out, ok := v.(io.Writer)
 	if !ok {
-		return base.ErrExpectedByteSlice
+		return base.ErrExpectedWriter
 	}
 
-	_, err := d.r.Read(out)
-
+	_, err := io.Copy(out, d.r)
 	return err
 }
 
@@ -40,11 +39,12 @@ type encoder struct {
 }
 
 func (e encoder) Encode(v interface{}) error {
-	slice, ok := v.([]byte)
+	in, ok := v.(io.Reader)
 	if !ok {
-		return base.ErrExpectedByteSlice
+		return base.ErrExpectedReader
 	}
-	_, err := e.w.Write(slice)
+
+	_, err := io.Copy(e.w, in)
 	if err != nil {
 		return err
 	}

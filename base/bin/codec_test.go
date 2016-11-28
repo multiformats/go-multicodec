@@ -13,10 +13,13 @@ func TestBinaryDecoding(t *testing.T) {
 	data := []byte("Multicodec")
 	buf.Write(data)
 
-	dataOut := make([]byte, len(data))
-	Multicodec().Decoder(&buf).Decode(dataOut)
+	dataOut := bytes.Buffer{}
+	err := Multicodec().Decoder(&buf).Decode(&dataOut)
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	if !bytes.Equal(data, dataOut) {
+	if !bytes.Equal(data, dataOut.Bytes()) {
 		t.Fatalf("dataOut(%v) is not eqal to data(%v)", dataOut, data)
 	}
 }
@@ -25,9 +28,12 @@ func TestBinaryEncoding(t *testing.T) {
 	buf := bytes.Buffer{}
 	data := []byte("Is Awesome")
 
-	Multicodec().Encoder(&buf).Encode(data)
+	err := Multicodec().Encoder(&buf).Encode(bytes.NewReader(data))
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	err := mc.ConsumeHeader(&buf, Header)
+	err = mc.ConsumeHeader(&buf, Header)
 	if err != nil {
 		t.Fatal(err)
 	}
