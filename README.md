@@ -32,15 +32,15 @@ go get github.com/multiformats/go-multicodec
 
 Look at the Godocs:
 
-- https://godoc.org/github.com/jbenet/multicodec
+- https://godoc.org/github.com/multiformats/go-multicodec
 
 ```go
 import (
   "os"
   "io"
 
-  cbor "github.com/jbenet/go-multicodec/cbor"
-  json "github.com/jbenet/go-multicodec/json"
+  cbor "github.com/multiformats/go-multicodec/cbor"
+  json "github.com/multiformats/go-multicodec/json"
 )
 
 func main() {
