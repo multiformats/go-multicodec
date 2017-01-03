@@ -41,13 +41,13 @@ import (
   "os"
   "io"
 
-  cbor "github.com/jbenet/go-multicodec/cbor"
-  json "github.com/jbenet/go-multicodec/json"
+  cbor "github.com/multiformats/go-multicodec/cbor"
+  json "github.com/multiformats/go-multicodec/json"
 )
 
 func main() {
-  dec := cbor.Multicodec().NewDecoder(os.Stdin)
-  enc := json.Multicodec().NewEncoder(os.Stdout)
+  dec := cbor.Multicodec().Decoder(os.Stdin)
+  enc := json.Multicodec(false).Encoder(os.Stdout)
 
   for {
     var item interface{}
