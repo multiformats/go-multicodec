@@ -1,12 +1,14 @@
 # go-multicodec
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
-[![](https://img.shields.io/badge/project-multiformats-blue.svg?style=flat-square)](http://github.com/multiformats/multiformats)
-[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](http://webchat.freenode.net/?channels=%23ipfs)
+[![](https://img.shields.io/badge/project-multiformats-blue.svg?style=flat-square)](https://github.com/multiformats/multiformats)
+[![](https://img.shields.io/badge/freenode-%23ipfs-blue.svg?style=flat-square)](https://webchat.freenode.net/?channels=%23ipfs)
+[![](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![Travis CI](https://img.shields.io/travis/multiformats/go-multicodec.svg?style=flat-square&branch=master)](https://travis-ci.org/multiformats/go-multicodec)
+[![codecov.io](https://img.shields.io/codecov/c/github/multiformats/go-multicodec.svg?style=flat-square&branch=master)](https://codecov.io/github/multiformats/go-multicodec?branch=master)
+[![GoDoc](https://godoc.org/github.com/multiformats/go-multicodec?status.svg)](https://godoc.org/github.com/multiformats/go-multicodec)
 
-> multicodec: self-describing serialization
-
-This is the [multicodec](https://github.com/multiformats/multicodec) implementation in Go.
+> [multicodec](https://github.com/multiformats/multicodec) implementation in Go.
 
 ### Supported codecs
 
@@ -32,20 +34,20 @@ go get github.com/multiformats/go-multicodec
 
 Look at the Godocs:
 
-- https://godoc.org/github.com/jbenet/multicodec
+- https://godoc.org/github.com/multiformats/go-multicodec
 
 ```go
 import (
   "os"
   "io"
 
-  cbor "github.com/jbenet/go-multicodec/cbor"
-  json "github.com/jbenet/go-multicodec/json"
+  cbor "github.com/multiformats/go-multicodec/cbor"
+  json "github.com/multiformats/go-multicodec/json"
 )
 
 func main() {
-  dec := cbor.Multicodec().NewDecoder(os.Stdin)
-  enc := json.Multicodec().NewEncoder(os.Stdout)
+  dec := cbor.Multicodec().Decoder(os.Stdin)
+  enc := json.Multicodec(false).Encoder(os.Stdout)
 
   for {
     var item interface{}
@@ -73,8 +75,8 @@ Contributions welcome. Please check out [the issues](https://github.com/multifor
 
 Check out our [contributing document](https://github.com/multiformats/multiformats/blob/master/contributing.md) for more information on how we work, and about contributing in general. Please be aware that all interactions related to multiformats are subject to the IPFS [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md).
 
-Small note: If editing the Readme, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
 
 ## License
 
-[MIT](LICENSE) © Juan Batiz-Benet
+[MIT](LICENSE) © 2014 Juan Batiz-Benet
