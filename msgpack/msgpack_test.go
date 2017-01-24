@@ -10,6 +10,10 @@ import (
 var testCases []interface{}
 
 func init() {
+	// Make sure we always generate the same encoded data for the
+	// same input
+	Canonical = true
+
 	tc1 := map[string]string{
 		"hello": "world",
 	}
