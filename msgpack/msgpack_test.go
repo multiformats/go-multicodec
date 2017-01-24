@@ -5,14 +5,16 @@ import (
 	"testing/quick"
 
 	mctest "github.com/multiformats/go-multicodec/test"
+	gocodec "github.com/ugorji/go/codec"
 )
 
 var testCases []interface{}
+var handle = &gocodec.MsgpackHandle{}
 
 func init() {
 	// Make sure we always generate the same encoded data for the
 	// same input
-	Canonical = true
+	handle.Canonical = true
 
 	tc1 := map[string]string{
 		"hello": "world",
@@ -40,7 +42,7 @@ func init() {
 type TestType map[string]map[string]string
 
 func TestRoundtripBasic(t *testing.T) {
-	codec := Codec()
+	codec := Codec(handle)
 	for _, tca := range testCases {
 		var tcb map[string]interface{}
 		mctest.RoundTripTest(t, codec, &tca, &tcb)
@@ -48,7 +50,7 @@ func TestRoundtripBasic(t *testing.T) {
 }
 
 func TestRoundtripCheck(t *testing.T) {
-	codec := Codec()
+	codec := Codec(handle)
 	f := func(o1 TestType) bool {
 		var o2 TestType
 		return mctest.RoundTripTest(t, codec, &o1, &o2)
@@ -59,14 +61,14 @@ func TestRoundtripCheck(t *testing.T) {
 }
 
 func TestHeaderMC(t *testing.T) {
-	codec := Multicodec()
+	codec := Multicodec(handle)
 	for _, tc := range testCases {
 		mctest.HeaderTest(t, codec, &tc)
 	}
 }
 
 func TestRoundtripBasicMC(t *testing.T) {
-	codec := Multicodec()
+	codec := Multicodec(handle)
 	for _, tca := range testCases {
 		var tcb map[string]interface{}
 		mctest.RoundTripTest(t, codec, &tca, &tcb)
@@ -74,7 +76,7 @@ func TestRoundtripBasicMC(t *testing.T) {
 }
 
 func TestRoundtripCheckMC(t *testing.T) {
-	codec := Multicodec()
+	codec := Multicodec(handle)
 	f := func(o1 TestType) bool {
 		var o2 TestType
 		return mctest.RoundTripTest(t, codec, &o1, &o2)

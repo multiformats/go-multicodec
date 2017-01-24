@@ -2,7 +2,6 @@ package mc_msgpack
 
 import (
 	"io"
-	"reflect"
 
 	mc "github.com/multiformats/go-multicodec"
 	gocodec "github.com/ugorji/go/codec"
@@ -11,92 +10,43 @@ import (
 var HeaderPath string
 var Header []byte
 
-// Handler options. See go/codec docs for their meanings.
-var (
-	// MsgpackHandle
-	RawToString bool
-	WriteExt    bool
-
-	// BasicHandle
-	TypeInfos *gocodec.TypeInfos
-
-	// Encode options
-	StructToArray       bool
-	Canonical           bool
-	CheckCircularRef    bool
-	RecursiveEmptyCheck bool
-	Raw                 bool
-	AsSymbols           gocodec.AsSymbolFlag
-
-	// Decode options
-	MapType              reflect.Type
-	SliceType            reflect.Type
-	MaxInitLen           int
-	ErrorIfNoField       bool
-	ErrorIfNoArrayExpand bool
-	SignedInteger        bool
-	MapValueReset        bool
-	InterfaceReset       bool
-	InternString         bool
-	PreferArrayOverSlice bool
-)
-
 func init() {
 	HeaderPath = "/msgpack"
 	Header = mc.Header([]byte(HeaderPath))
 }
 
 type codec struct {
-	mc bool
+	mc     bool
+	handle *gocodec.MsgpackHandle
 }
 
-func Codec() mc.Codec {
+func Codec(h *gocodec.MsgpackHandle) mc.Codec {
 	return &codec{
-		mc: false,
+		mc:     false,
+		handle: h,
 	}
 }
 
-func Multicodec() mc.Multicodec {
+func Multicodec(h *gocodec.MsgpackHandle) mc.Multicodec {
 	return &codec{
-		mc: true,
+		mc:     true,
+		handle: h,
 	}
 }
 
 func (c *codec) Encoder(w io.Writer) mc.Encoder {
-	h := &gocodec.MsgpackHandle{}
-	h.RawToString = RawToString
-	h.WriteExt = WriteExt
-	h.TypeInfos = TypeInfos
-	h.StructToArray = StructToArray
-	h.Canonical = Canonical
-	h.CheckCircularRef = CheckCircularRef
-	h.Raw = Raw
-	h.AsSymbols = AsSymbols
 	return &encoder{
 		w:   w,
 		mc:  c.mc,
-		enc: gocodec.NewEncoder(w, h),
+		enc: gocodec.NewEncoder(w, c.handle),
 	}
 }
 
 func (c *codec) Decoder(r io.Reader) mc.Decoder {
-	h := &gocodec.MsgpackHandle{}
-	h.RawToString = RawToString
-	h.WriteExt = WriteExt
-	h.TypeInfos = TypeInfos
-	h.MapType = MapType
-	h.SliceType = SliceType
-	h.MaxInitLen = MaxInitLen
-	h.ErrorIfNoField = ErrorIfNoField
-	h.SignedInteger = SignedInteger
-	h.MapValueReset = MapValueReset
-	h.InterfaceReset = InterfaceReset
-	h.InternString = InternString
-	h.PreferArrayOverSlice = PreferArrayOverSlice
 	return &decoder{
 		r:   r,
 		mc:  c.mc,
-		dec: gocodec.NewDecoder(r, h),
+		dec: gocodec.NewDecoder(r, c.handle),
 	}
 }
 
