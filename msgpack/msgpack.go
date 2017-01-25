@@ -27,6 +27,10 @@ func Codec(h *gocodec.MsgpackHandle) mc.Codec {
 	}
 }
 
+func DefaultMsgpackHandle() *gocodec.MsgpackHandle {
+	return &gocodec.MsgpackHandle{}
+}
+
 func Multicodec(h *gocodec.MsgpackHandle) mc.Multicodec {
 	return &codec{
 		mc:     true,

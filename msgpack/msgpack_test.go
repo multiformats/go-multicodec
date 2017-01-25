@@ -5,11 +5,10 @@ import (
 	"testing/quick"
 
 	mctest "github.com/multiformats/go-multicodec/test"
-	gocodec "github.com/ugorji/go/codec"
 )
 
 var testCases []interface{}
-var handle = &gocodec.MsgpackHandle{}
+var handle = DefaultMsgpackHandle()
 
 func init() {
 	// Make sure we always generate the same encoded data for the
