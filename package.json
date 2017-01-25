@@ -25,6 +25,12 @@
       "hash": "QmPL3RCWaM6s7b82LSLS1MGX2jpxPxA1v2vmgLm15b1NcW",
       "name": "cbor",
       "version": "0.2.0"
+    },
+    {
+      "author": "ugorji",
+      "hash": "QmRpRGNbrm6aaU7bnt6AwcJCfyETkdJzmtBdCazMYKoMux",
+      "name": "go-codec",
+      "version": "2017.1.3"
     }
   ],
   "gxVersion": "0.9.1",
