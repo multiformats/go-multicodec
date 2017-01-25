@@ -7,13 +7,9 @@ import (
 	gocodec "github.com/ugorji/go/codec"
 )
 
-var HeaderPath string
-var Header []byte
+const HeaderPath = "/msgpack"
 
-func init() {
-	HeaderPath = "/msgpack"
-	Header = mc.Header([]byte(HeaderPath))
-}
+var Header = mc.Header([]byte(HeaderPath))
 
 type codec struct {
 	mc     bool
