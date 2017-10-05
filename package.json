@@ -21,9 +21,9 @@
     },
     {
       "author": "whyrusleeping",
-      "hash": "QmVQfuckfPnW5LGmgSWsJVJr6Xea1bWXD8sBixe8E9MQD6",
+      "hash": "QmcRKRQjNc2JZPHApR32fbkZVd6WXG2Ch9Kcy7sPxuAJgd",
       "name": "cbor",
-      "version": "0.2.1"
+      "version": "0.2.3"
     },
     {
       "author": "ugorji",
@@ -37,6 +37,6 @@
   "license": "MIT",
   "name": "go-multicodec",
   "releaseCmd": "git commit -a -m \"gx publish $VERSION\"",
-  "version": "0.1.2"
+  "version": "0.1.3"
 }
 
