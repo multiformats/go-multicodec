@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"io"
 
-	msgio "github.com/jbenet/go-msgio"
+	msgio "github.com/libp2p/go-msgio"
 
 	mc "github.com/multiformats/go-multicodec"
 )
