@@ -274,8 +274,6 @@ func decode(r io.Reader, next func(m *mux.Multicodec, v interface{}) error) erro
 			return err
 		}
 	}
-
-	return nil
 }
 
 func codecWithPath(path string) mc.Multicodec {
