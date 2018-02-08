@@ -35,7 +35,7 @@ func TestTestWrapP2H(t *testing.T) {
 
 	outS := string(out)
 	if outS != "data" {
-		t.Fatal("data is not equal, got %s", outS)
+		t.Fatalf("data is not equal, got %s", outS)
 	}
 
 }
