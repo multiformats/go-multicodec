@@ -3,6 +3,7 @@ package mc_json
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 
 	msgio "github.com/libp2p/go-msgio"
@@ -115,9 +116,21 @@ func (c *decoder) Decode(v interface{}) error {
 		if err != nil {
 			return err
 		}
+		return json.NewDecoder(r).Decode(v)
 	}
 
-	return json.NewDecoder(r).Decode(v)
+	decoder := json.NewDecoder(r)
+	err := decoder.Decode(v)
+	// the JSON decoder may read ahead so reset the reader so we don't
+	// drop the extra bytes read
+	c.r = io.MultiReader(decoder.Buffered(), c.r)
+	// read the trailing newline
+	buf := make([]byte, 1)
+	c.r.Read(buf)
+	if buf[0] != '\n' {
+		return fmt.Errorf("expected newline after json string")
+	}
+	return err
 }
 
 func recast(v interface{}) (cv interface{}, err error) {
