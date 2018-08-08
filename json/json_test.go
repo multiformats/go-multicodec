@@ -1,6 +1,7 @@
 package mc_json
 
 import (
+	"bytes"
 	"testing"
 	"testing/quick"
 
@@ -87,6 +88,29 @@ func TestRoundtripCheckMC(t *testing.T) {
 		}
 		if err := quick.Check(f, nil); err != nil {
 			t.Error(err)
+		}
+	}
+}
+
+func TestMultiRead(t *testing.T) {
+	codecs := []mc.Multicodec{Multicodec(true), Multicodec(false)}
+	for _, codec := range codecs {
+		var buf bytes.Buffer
+		encoder := codec.Encoder(&buf)
+		for _, tca := range testCases {
+			err := encoder.Encode(tca)
+			if err != nil {
+				t.Fatal(err)
+			}
+		}
+		reader := bytes.NewReader(buf.Bytes())
+		decoder := codec.Decoder(reader)
+		for i := 0; i < len(testCases); i++ {
+			res := map[string]interface{}{}
+			err := decoder.Decode(&res)
+			if err != nil {
+				t.Fatal(err)
+			}
 		}
 	}
 }
