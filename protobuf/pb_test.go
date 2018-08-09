@@ -90,9 +90,13 @@ func fixObj(o pb.Bar) pb.Bar {
 	var goodfoos []*pb.Foo
 	for _, f := range o.GetFoos() {
 		if f != nil {
+			f.XXX_unrecognized = nil
+			f.XXX_sizecache = 0
 			goodfoos = append(goodfoos, f)
 		}
 	}
+	o.XXX_unrecognized = nil
+	o.XXX_sizecache = 0
 	o.Foos = goodfoos
 	return o
 }
