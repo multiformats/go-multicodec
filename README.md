@@ -1,4 +1,15 @@
+# Deprecated
+
+**NOTE:** *Multicodec* is not deprecated, just this library.
+
+This library has been deprecated to reduce confusion concerning the multicodec project. It is *not* an implementation of multicodec as it exists today (as described in the [project's README](https://github.com/multiformats/multicodec)). Instead, it's closer to the *multistream* protocol but we already have an actively used `go-multistream` repository (for multistream-select).
+
+*This library will not be maintained.*
+
+---
+
 # go-multicodec
+
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](http://ipn.io)
 [![](https://img.shields.io/badge/project-multiformats-blue.svg?style=flat-square)](https://github.com/multiformats/multiformats)
