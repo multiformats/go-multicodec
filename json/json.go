@@ -3,6 +3,7 @@ package mc_json
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 
 	msgio "github.com/libp2p/go-msgio"
@@ -46,6 +47,10 @@ func (c *codec) Encoder(w io.Writer) mc.Encoder {
 }
 
 func (c *codec) Decoder(r io.Reader) mc.Decoder {
+	if !c.mc && !c.msgio {
+		// shortcut.
+		return json.NewDecoder(r)
+	}
 	return &decoder{
 		r: r,
 		c: c,
@@ -67,8 +72,9 @@ type encoder struct {
 }
 
 type decoder struct {
-	r io.Reader
-	c *codec
+	remainder bytes.Buffer
+	r         io.Reader
+	c         *codec
 }
 
 func (c *encoder) Encode(v interface{}) error {
@@ -100,24 +106,49 @@ func (c *encoder) Encode(v interface{}) error {
 }
 
 func (c *decoder) Decode(v interface{}) error {
-	r := c.r
+	// Pick up any leftover bytes from last time.
+	r := io.MultiReader(&c.remainder, c.r)
 
 	if c.c.mc {
 		// if multicodec, consume the header first
-		if err := mc.ConsumeHeader(c.r, c.c.Header()); err != nil {
+		if err := mc.ConsumeHeader(r, c.c.Header()); err != nil {
 			return err
 		}
 	}
 	if c.c.msgio {
-		// need to make a new one per read.
-		var err error
-		r, err = msgio.LimitedReader(c.r)
+		// Might as well read everything up-front to save read calls.
+		reader := msgio.NewReader(r)
+		msg, err := reader.ReadMsg()
 		if err != nil {
 			return err
 		}
+		err = json.Unmarshal(msg, v)
+		reader.ReleaseMsg(msg)
+		return err
 	}
 
-	return json.NewDecoder(r).Decode(v)
+	jDecoder := json.NewDecoder(r)
+	err := jDecoder.Decode(v)
+
+	// Put back any additional bytes read.
+	var buf bytes.Buffer
+
+	// First the ones in the decoder.
+	io.Copy(&buf, jDecoder.Buffered())
+
+	// Then any still in the current remainder.
+	io.Copy(&buf, &c.remainder)
+
+	// Save them for next time.
+	c.remainder = buf
+
+	var oneByte [1]byte
+	io.MultiReader(&c.remainder, c.r).Read(oneByte[:])
+	if oneByte[0] != '\n' {
+		return fmt.Errorf("expected newline after json")
+	}
+
+	return err
 }
 
 func recast(v interface{}) (cv interface{}, err error) {
