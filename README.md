@@ -67,10 +67,6 @@ func main() {
 }
 ```
 
-## Maintainers
-
-Captain: [@jbenet](https://github.com/jbenet).
-
 ## Contribute
 
 Contributions welcome. Please check out [the issues](https://github.com/multiformats/go-multicodec/issues).
