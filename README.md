@@ -2,7 +2,7 @@
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg)](https://github.com/RichardLitt/standard-readme)
 
-> Generated Go constants of [multicodecs](https://github.com/multiformats/multicodec) used by the [multiformats](https://github.com/multiformats/multiformats) projects.
+> Generated Go constants for the [multicodec table](https://github.com/multiformats/multicodec) used by the [multiformats](https://github.com/multiformats/multiformats) projects.
 
 ## Table of Contents
 
