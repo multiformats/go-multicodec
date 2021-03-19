@@ -301,6 +301,9 @@ const (
 	// Unix is tagged "multiaddr".
 	Unix Code = 0x0190 // unix
 
+	// Thread is tagged "multiaddr" and described by: Textile Thread.
+	Thread Code = 0x0196 // thread
+
 	// P2p is tagged "multiaddr" and described by: libp2p.
 	P2p Code = 0x01a5 // p2p
 
@@ -1383,4 +1386,17 @@ const (
 
 	// HolochainSigV1 is tagged "holochain" and described by: Holochain v1 signature  + 8 R-S (63 x Base-32).
 	HolochainSigV1 Code = 0xa37124 // holochain-sig-v1
+
+	// SkynetNs is tagged "namespace" and described by: Skynet Namespace.
+	SkynetNs Code = 0xb19910 // skynet-ns
 )
+
+// Of returns the code for a given name, and if it is a defined code.
+func Of(name string) (code Code, ok bool) {
+	for c, n := range _Code_map {
+		if n == name {
+			return c, true
+		}
+	}
+	return Identity, false
+}

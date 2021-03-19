@@ -3,4 +3,6 @@ package multicodec
 
 //go:generate go run gen.go
 //go:generate gofmt -w code.go
-//go:generate stringer -type=Code -linecomment
+//go:generate go get golang.org/x/tools/cmd/stringer
+//go:generate go run golang.org/x/tools/cmd/stringer -type=Code -linecomment
+//go:generate go mod tidy
