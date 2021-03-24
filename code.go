@@ -1400,3 +1400,9 @@ func Of(name string) (code Code, ok bool) {
 	}
 	return Identity, false
 }
+
+// Register adds a user defined code to the multicodec table.
+func Register(code Code, name string) error {
+	_Code_map[code] = name
+	return nil
+}
