@@ -1,0 +1,21 @@
+on: [push, pull_request]
+name: go generate
+
+jobs:
+  gogenerate:
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "1.16.x"
+      - name: Go information
+        run: |
+          go version
+          go env
+      - name: Run go generate
+        run: |
+          go generate ./...
+          git diff --exit-code
