@@ -1,3 +1,4 @@
+//go:build ignore
 // +build ignore
 
 package main
@@ -24,7 +25,7 @@ package multicodec
 type Code uint64
 
 const ({{ range . }}
-// {{ if .IsDeprecated }}Deprecated: {{ end }}{{ .VarName }} is tagged "{{ .Tag }}"{{ if .Description }} and described by: {{ .Description }}{{ end }}.
+// {{ if .IsDeprecated }}Deprecated: {{ end }}{{ .VarName }} is a {{ .Status }} code tagged "{{ .Tag }}"{{ if .Description }} and described by: {{ .Description }}{{ end }}.
 {{ .VarName }} Code = {{ .Code }} // {{ .Name }}
 {{ end }})
 
@@ -43,6 +44,7 @@ type tableEntry struct {
 	Name        string
 	Tag         string
 	Code        string
+	Status      string
 	Description string
 }
 
@@ -88,7 +90,8 @@ func main() {
 			Name:        strings.TrimSpace(record[0]),
 			Tag:         strings.TrimSpace(record[1]),
 			Code:        strings.TrimSpace(record[2]),
-			Description: strings.TrimSpace(record[3]),
+			Status:      strings.TrimSpace(record[3]),
+			Description: strings.TrimSpace(record[4]),
 		})
 	}
 
