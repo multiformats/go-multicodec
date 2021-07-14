@@ -19,24 +19,10 @@ const codeTemplate = `
 
 package multicodec
 
-// Code describes an integer reserved in the multicodec table, defined at
-// github.com/multiformats/multicodec.
-type Code uint64
-
 const ({{ range . }}
 // {{ if .IsDeprecated }}Deprecated: {{ end }}{{ .VarName }} is a {{ .Status }} code tagged "{{ .Tag }}"{{ if .Description }} and described by: {{ .Description }}{{ end }}.
 {{ .VarName }} Code = {{ .Code }} // {{ .Name }}
 {{ end }})
-
-// Of returns the code for a given name, and if it is a defined code.
-func Of(name string) (code Code, ok bool) {
-	for c, n := range _Code_map {
-		if n == name {
-			return c, true
-		}
-	}
-	return Identity, false
-}
 `
 
 type tableEntry struct {
@@ -101,7 +87,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	out, err := os.Create("code.go")
+	out, err := os.Create("code_table.go")
 	if err != nil {
 		log.Fatal(err)
 	}
