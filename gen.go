@@ -7,7 +7,6 @@ import (
 	"encoding/csv"
 	"io"
 	"log"
-	"net/http"
 	"os"
 	"strings"
 	"text/template"
@@ -69,14 +68,14 @@ func (c tableEntry) VarName() string {
 }
 
 func main() {
-	resp, err := http.Get("https://raw.githubusercontent.com/multiformats/multicodec/HEAD/table.csv")
+	f, err := os.Open("multicodec/table.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer resp.Body.Close()
+	defer f.Close()
 
 	var entries []tableEntry
-	csvReader := csv.NewReader(resp.Body)
+	csvReader := csv.NewReader(f)
 	csvReader.Read() // skip the header line
 	for {
 		record, err := csvReader.Read()
