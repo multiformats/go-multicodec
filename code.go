@@ -50,7 +50,7 @@ func (c *Code) Set(text string) error {
 			*c = code
 			return nil
 		}
-		if _Code_map[code] != "" { // known code
+		if _, ok := _Code_map[code]; ok { // known code
 			*c = code
 			return nil
 		}
