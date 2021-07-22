@@ -34,11 +34,11 @@ var _ fmt.Stringer = Code(0)
 
 // ReservedStart is the (inclusive) start of the reserved range of codes that
 // are safe to use for internal purposes.
-const ReservedStart = Code(0x300000)
+const ReservedStart = 0x300000
 
-// ReservedEnd is the (exclusive) end of the reserved range of codes that are
+// ReservedEnd is the (inclusive) end of the reserved range of codes that are
 // safe to use for internal purposes.
-const ReservedEnd = Code(0x3FFFFF)
+const ReservedEnd = 0x3FFFFF
 
 // Set implements flag.Value, interpreting the input string as a multicodec and
 // setting the receiver to it.
