@@ -39,6 +39,7 @@ To generate the constants yourself:
 
 	git clone https://github.com/multiformats/go-multicodec
 	cd go-multicodec
+	git submodule init && git submodule update
 	go generate
 
 Note: You may need to install `stringer` via `go install golang.org/x/tools/cmd/stringer`.
