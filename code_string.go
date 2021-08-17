@@ -123,7 +123,6 @@ func _() {
 	_ = x[P2pWebsocketStar-479]
 	_ = x[Http-480]
 	_ = x[Json-512]
-	_ = x[Messagepack-513]
 	_ = x[Libp2pPeerRecord-769]
 	_ = x[Libp2pRelayRsvp-770]
 	_ = x[CarIndexSorted-1024]

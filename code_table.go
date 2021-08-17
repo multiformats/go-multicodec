@@ -348,9 +348,6 @@ const (
 	// Json is a permanent code tagged "serialization" and described by: JSON (UTF-8-encoded).
 	Json Code = 0x0200 // json
 
-	// Messagepack is a draft code tagged "serialization" and described by: MessagePack.
-	Messagepack Code = 0x0201 // messagepack
-
 	// Libp2pPeerRecord is a permanent code tagged "libp2p" and described by: libp2p peer record type.
 	Libp2pPeerRecord Code = 0x0301 // libp2p-peer-record
 
