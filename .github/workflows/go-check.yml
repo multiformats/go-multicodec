@@ -55,6 +55,8 @@ jobs:
           run: |
             set -o pipefail
             staticcheck ./... | sed -e 's@\(.*\)\.go@./\1.go@g'
+      - name: failing step
+        run: exit 1
       - name: go generate
         uses: protocol/multiple-go-modules@v1.2
         if: (success() || failure()) && env.RUNGOGENERATE == 'true'
