@@ -159,22 +159,22 @@ const (
 	// DagCose is a draft code tagged "ipld" and described by: MerkleDAG COSE.
 	DagCose Code = 0x86 // dag-cose
 
-	// EthBlock is a permanent code tagged "ipld" and described by: Ethereum Block (RLP).
+	// EthBlock is a permanent code tagged "ipld" and described by: Ethereum Header (RLP).
 	EthBlock Code = 0x90 // eth-block
 
-	// EthBlockList is a permanent code tagged "ipld" and described by: Ethereum Block List (RLP).
+	// EthBlockList is a permanent code tagged "ipld" and described by: Ethereum Header List (RLP).
 	EthBlockList Code = 0x91 // eth-block-list
 
 	// EthTxTrie is a permanent code tagged "ipld" and described by: Ethereum Transaction Trie (Eth-Trie).
 	EthTxTrie Code = 0x92 // eth-tx-trie
 
-	// EthTx is a permanent code tagged "ipld" and described by: Ethereum Transaction (RLP).
+	// EthTx is a permanent code tagged "ipld" and described by: Ethereum Transaction (MarshalBinary).
 	EthTx Code = 0x93 // eth-tx
 
 	// EthTxReceiptTrie is a permanent code tagged "ipld" and described by: Ethereum Transaction Receipt Trie (Eth-Trie).
 	EthTxReceiptTrie Code = 0x94 // eth-tx-receipt-trie
 
-	// EthTxReceipt is a permanent code tagged "ipld" and described by: Ethereum Transaction Receipt (RLP).
+	// EthTxReceipt is a permanent code tagged "ipld" and described by: Ethereum Transaction Receipt (MarshalBinary).
 	EthTxReceipt Code = 0x95 // eth-tx-receipt
 
 	// EthStateTrie is a permanent code tagged "ipld" and described by: Ethereum State Trie (Eth-Secure-Trie).
@@ -185,6 +185,12 @@ const (
 
 	// EthStorageTrie is a permanent code tagged "ipld" and described by: Ethereum Contract Storage Trie (Eth-Secure-Trie).
 	EthStorageTrie Code = 0x98 // eth-storage-trie
+
+	// EthReceiptLogTrie is a draft code tagged "ipld" and described by: Ethereum Transaction Receipt Log Trie (Eth-Trie).
+	EthReceiptLogTrie Code = 0x99 // eth-receipt-log-trie
+
+	// EthRecieptLog is a draft code tagged "ipld" and described by: Ethereum Transaction Receipt Log (RLP).
+	EthRecieptLog Code = 0x9a // eth-reciept-log
 
 	// BitcoinBlock is a permanent code tagged "ipld" and described by: Bitcoin Block.
 	BitcoinBlock Code = 0xb0 // bitcoin-block
@@ -345,6 +351,9 @@ const (
 	// Http is a draft code tagged "multiaddr".
 	Http Code = 0x01e0 // http
 
+	// Swhid1Snp is a draft code tagged "ipld" and described by: SoftWare Heritage persistent IDentifier version 1 snapshot.
+	Swhid1Snp Code = 0x01f0 // swhid-1-snp
+
 	// Json is a permanent code tagged "serialization" and described by: JSON (UTF-8-encoded).
 	Json Code = 0x0200 // json
 
@@ -359,6 +368,9 @@ const (
 
 	// CarIndexSorted is a draft code tagged "serialization" and described by: CARv2 IndexSorted index format.
 	CarIndexSorted Code = 0x0400 // car-index-sorted
+
+	// CarMultihashIndexSorted is a draft code tagged "serialization" and described by: CARv2 MultihashIndexSorted index format.
+	CarMultihashIndexSorted Code = 0x0401 // car-multihash-index-sorted
 
 	// Sha2_256Trunc254Padded is a permanent code tagged "multihash" and described by: SHA2-256 with the two most significant bits from the last byte zeroed (as via a mask with 0b00111111) - used for proving trees as in Filecoin.
 	Sha2_256Trunc254Padded Code = 0x1012 // sha2-256-trunc254-padded
@@ -392,6 +404,9 @@ const (
 
 	// X448Pub is a draft code tagged "key" and described by: X448 public Key.
 	X448Pub Code = 0x1204 // x448-pub
+
+	// RsaX509Pub is a draft code tagged "key" and described by: RSA public key (X.509 encoded).
+	RsaX509Pub Code = 0x1205 // rsa-x509-pub
 
 	// Ed25519Priv is a draft code tagged "key" and described by: Ed25519 private key.
 	Ed25519Priv Code = 0x1300 // ed25519-priv
@@ -1403,4 +1418,7 @@ const (
 
 	// SkynetNs is a draft code tagged "namespace" and described by: Skynet Namespace.
 	SkynetNs Code = 0xb19910 // skynet-ns
+
+	// ArweaveNs is a draft code tagged "namespace" and described by: Arweave Namespace.
+	ArweaveNs Code = 0xb29910 // arweave-ns
 )
