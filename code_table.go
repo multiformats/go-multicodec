@@ -63,11 +63,14 @@ const (
 	// Blake3 is a draft code tagged "multihash" and described by: BLAKE3 has a default 32 byte output length. The maximum length is (2^64)-1 bytes..
 	Blake3 Code = 0x1e // blake3
 
+	// Sha2_384 is a permanent code tagged "multihash" and described by: aka SHA-384; as specified by FIPS 180-4..
+	Sha2_384 Code = 0x20 // sha2-384
+
 	// Dccp is a draft code tagged "multiaddr".
 	Dccp Code = 0x21 // dccp
 
-	// Murmur3_128 is a draft code tagged "multihash".
-	Murmur3_128 Code = 0x22 // murmur3-128
+	// Murmur3X64_64 is a permanent code tagged "multihash" and described by: The first 64-bits of a murmur3-x64-128 - used for UnixFS directory sharding..
+	Murmur3X64_64 Code = 0x22 // murmur3-x64-64
 
 	// Murmur3_32 is a draft code tagged "multihash".
 	Murmur3_32 Code = 0x23 // murmur3-32
@@ -191,6 +194,21 @@ const (
 
 	// EthRecieptLog is a draft code tagged "ipld" and described by: Ethereum Transaction Receipt Log (RLP).
 	EthRecieptLog Code = 0x9a // eth-reciept-log
+
+	// Aes128 is a draft code tagged "key" and described by: 128-bit AES symmetric key.
+	Aes128 Code = 0xa0 // aes-128
+
+	// Aes192 is a draft code tagged "key" and described by: 192-bit AES symmetric key.
+	Aes192 Code = 0xa1 // aes-192
+
+	// Aes256 is a draft code tagged "key" and described by: 256-bit AES symmetric key.
+	Aes256 Code = 0xa2 // aes-256
+
+	// Chacha128 is a draft code tagged "key" and described by: 128-bit ChaCha symmetric key.
+	Chacha128 Code = 0xa3 // chacha-128
+
+	// Chacha256 is a draft code tagged "key" and described by: 256-bit ChaCha symmetric key.
+	Chacha256 Code = 0xa4 // chacha-256
 
 	// BitcoinBlock is a permanent code tagged "ipld" and described by: Bitcoin Block.
 	BitcoinBlock Code = 0xb0 // bitcoin-block
@@ -375,6 +393,18 @@ const (
 	// Sha2_256Trunc254Padded is a permanent code tagged "multihash" and described by: SHA2-256 with the two most significant bits from the last byte zeroed (as via a mask with 0b00111111) - used for proving trees as in Filecoin.
 	Sha2_256Trunc254Padded Code = 0x1012 // sha2-256-trunc254-padded
 
+	// Sha2_224 is a permanent code tagged "multihash" and described by: aka SHA-224; as specified by FIPS 180-4..
+	Sha2_224 Code = 0x1013 // sha2-224
+
+	// Sha2_512_224 is a permanent code tagged "multihash" and described by: aka SHA-512/224; as specified by FIPS 180-4..
+	Sha2_512_224 Code = 0x1014 // sha2-512-224
+
+	// Sha2_512_256 is a permanent code tagged "multihash" and described by: aka SHA-512/256; as specified by FIPS 180-4..
+	Sha2_512_256 Code = 0x1015 // sha2-512-256
+
+	// Murmur3X64_128 is a draft code tagged "multihash".
+	Murmur3X64_128 Code = 0x1022 // murmur3-x64-128
+
 	// Ripemd128 is a draft code tagged "multihash".
 	Ripemd128 Code = 0x1052 // ripemd-128
 
@@ -405,8 +435,8 @@ const (
 	// X448Pub is a draft code tagged "key" and described by: X448 public Key.
 	X448Pub Code = 0x1204 // x448-pub
 
-	// RsaX509Pub is a draft code tagged "key" and described by: RSA public key (X.509 encoded).
-	RsaX509Pub Code = 0x1205 // rsa-x509-pub
+	// RsaPub is a draft code tagged "key" and described by: RSA public key. DER-encoded ASN.1 type RSAPublicKey according to IETF RFC 8017 (PKCS #1).
+	RsaPub Code = 0x1205 // rsa-pub
 
 	// Ed25519Priv is a draft code tagged "key" and described by: Ed25519 private key.
 	Ed25519Priv Code = 0x1300 // ed25519-priv
@@ -1397,6 +1427,9 @@ const (
 
 	// FilCommitmentSealed is a permanent code tagged "filecoin" and described by: Filecoin sector data commitment merkle node/root - sealed and replicated (CommR).
 	FilCommitmentSealed Code = 0xf102 // fil-commitment-sealed
+
+	// Plaintextv2 is a draft code tagged "multiaddr".
+	Plaintextv2 Code = 0x706c61 // plaintextv2
 
 	// HolochainAdrV0 is a draft code tagged "holochain" and described by: Holochain v0 address    + 8 R-S (63 x Base-32).
 	HolochainAdrV0 Code = 0x807124 // holochain-adr-v0
