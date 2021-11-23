@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"sort"
 	"strings"
 	"text/template"
 	"unicode"
@@ -20,16 +21,36 @@ const codeTemplate = `
 package multicodec
 
 const (
-{{- range . }}
+{{- range .Entries }}
 	// {{ if .IsDeprecated }}Deprecated: {{ end }}{{ .ConstName }} is a {{ .Status }} code tagged "{{ .Tag }}"{{ if .Description }} and described by: {{ .Description }}{{ end }}.
 	{{ .ConstName }} Code = {{ .Code }} // {{ .Name }}
 {{ end -}}
 )
 
 var knownCodes = []Code{
-{{- range . }}
+{{- range .Entries }}
 	{{ .ConstName }},
 {{- end }}
+}
+
+func (c Code) Tag() string {
+	switch c {
+{{- range $i, $tag := .Tags }}
+	case {{ $first := true }}
+	{{- range $.Entries }}
+		{{- /* we don't include the only deprecated code, as it's a duplicate */ -}}
+		{{- if not .IsDeprecated }}{{ if eq .Tag $tag }}
+			{{- if not $first }},
+{{ end }}{{ $first = false -}}
+			{{ .ConstName -}}
+		{{ end }}{{ end -}}
+	{{ end -}}
+	:
+		return {{ printf "%q" $tag }}
+{{ end -}}
+	default:
+		return "<unknown>"
+	}
 }
 `
 
@@ -68,7 +89,11 @@ func main() {
 	}
 	defer f.Close()
 
-	var entries []tableEntry
+	var tmplData struct {
+		Entries []tableEntry
+		Tags    []string
+	}
+	tags := make(map[string]bool)
 	csvReader := csv.NewReader(f)
 	csvReader.Read() // skip the header line
 	for {
@@ -79,14 +104,20 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		entries = append(entries, tableEntry{
+		entry := tableEntry{
 			Name:        strings.TrimSpace(record[0]),
 			Tag:         strings.TrimSpace(record[1]),
 			Code:        strings.TrimSpace(record[2]),
 			Status:      strings.TrimSpace(record[3]),
 			Description: strings.TrimSpace(record[4]),
-		})
+		}
+		tmplData.Entries = append(tmplData.Entries, entry)
+		tags[entry.Tag] = true // use a map to deduplicate
 	}
+	for tag := range tags {
+		tmplData.Tags = append(tmplData.Tags, tag)
+	}
+	sort.Strings(tmplData.Tags)
 
 	tmpl, err := template.New("").
 		Funcs(template.FuncMap{"ToTitle": strings.Title}).
@@ -101,7 +132,7 @@ func main() {
 	}
 	defer out.Close()
 
-	if err := tmpl.Execute(out, entries); err != nil {
+	if err := tmpl.Execute(out, tmplData); err != nil {
 		log.Fatal(err)
 	}
 }
