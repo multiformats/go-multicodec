@@ -90,3 +90,32 @@ func TestFlagValue(t *testing.T) {
 	}
 
 }
+
+func TestKnownCodes(t *testing.T) {
+	t.Parallel()
+
+	codes := multicodec.KnownCodes()
+	if len(codes) < 100 {
+		t.Fatalf("expected list to have at least 100 elements")
+	}
+	seen := map[multicodec.Code]bool{}
+	missing := map[multicodec.Code]bool{
+		multicodec.Identity: true,
+		multicodec.Cidv2:    true,
+		multicodec.Path:     true,
+		multicodec.Md5:      true,
+	}
+	for _, code := range codes {
+		// Ipfs is deprecated in favor of Libp2p, and they share the same value.
+		if seen[code] && code != multicodec.Ipfs {
+			t.Errorf("duplicate code: %v", code)
+		}
+		seen[code] = true
+		if missing[code] {
+			delete(missing, code)
+		}
+	}
+	for code := range missing {
+		t.Errorf("missing code: %v", code)
+	}
+}
