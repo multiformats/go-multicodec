@@ -9,9 +9,7 @@ import (
 
 //go:generate go run gen.go
 //go:generate gofmt -w code_table.go
-//go:generate go get golang.org/x/tools/cmd/stringer
-//go:generate go run golang.org/x/tools/cmd/stringer -type=Code -linecomment
-//go:generate go mod tidy
+//go:generate go run golang.org/x/tools/cmd/stringer@v0.1.7 -type=Code -linecomment
 
 // Code describes an integer reserved in the multicodec table, defined at
 // github.com/multiformats/multicodec.
