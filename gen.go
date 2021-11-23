@@ -19,10 +19,18 @@ const codeTemplate = `
 
 package multicodec
 
-const ({{ range . }}
-// {{ if .IsDeprecated }}Deprecated: {{ end }}{{ .VarName }} is a {{ .Status }} code tagged "{{ .Tag }}"{{ if .Description }} and described by: {{ .Description }}{{ end }}.
-{{ .VarName }} Code = {{ .Code }} // {{ .Name }}
-{{ end }})
+const (
+{{- range . }}
+	// {{ if .IsDeprecated }}Deprecated: {{ end }}{{ .ConstName }} is a {{ .Status }} code tagged "{{ .Tag }}"{{ if .Description }} and described by: {{ .Description }}{{ end }}.
+	{{ .ConstName }} Code = {{ .Code }} // {{ .Name }}
+{{ end -}}
+)
+
+var knownCodes = []Code{
+{{- range . }}
+	{{ .ConstName }},
+{{- end }}
+}
 `
 
 type tableEntry struct {
@@ -37,7 +45,7 @@ func (c tableEntry) IsDeprecated() bool {
 	return strings.Contains(c.Description, "deprecated")
 }
 
-func (c tableEntry) VarName() string {
+func (c tableEntry) ConstName() string {
 	var b strings.Builder
 	var last rune
 	for _, part := range strings.Split(c.Name, "-") {
