@@ -6,13 +6,13 @@ const (
 	// Identity is a permanent code tagged "multihash" and described by: raw binary.
 	Identity Code = 0x00 // identity
 
-	// Cidv1 is a permanent code tagged "ipld" and described by: CIDv1.
+	// Cidv1 is a permanent code tagged "cid" and described by: CIDv1.
 	Cidv1 Code = 0x01 // cidv1
 
-	// Cidv2 is a draft code tagged "ipld" and described by: CIDv2.
+	// Cidv2 is a draft code tagged "cid" and described by: CIDv2.
 	Cidv2 Code = 0x02 // cidv2
 
-	// Cidv3 is a draft code tagged "ipld" and described by: CIDv3.
+	// Cidv3 is a draft code tagged "cid" and described by: CIDv3.
 	Cidv3 Code = 0x03 // cidv3
 
 	// Ip4 is a permanent code tagged "multiaddr".
@@ -111,7 +111,7 @@ const (
 	// Protobuf is a draft code tagged "serialization" and described by: Protocol Buffers.
 	Protobuf Code = 0x50 // protobuf
 
-	// Cbor is a permanent code tagged "serialization" and described by: CBOR.
+	// Cbor is a permanent code tagged "ipld" and described by: CBOR.
 	Cbor Code = 0x51 // cbor
 
 	// Raw is a permanent code tagged "ipld" and described by: raw binary.
@@ -372,7 +372,7 @@ const (
 	// Swhid1Snp is a draft code tagged "ipld" and described by: SoftWare Heritage persistent IDentifier version 1 snapshot.
 	Swhid1Snp Code = 0x01f0 // swhid-1-snp
 
-	// Json is a permanent code tagged "serialization" and described by: JSON (UTF-8-encoded).
+	// Json is a permanent code tagged "ipld" and described by: JSON (UTF-8-encoded).
 	Json Code = 0x0200 // json
 
 	// Messagepack is a draft code tagged "serialization" and described by: MessagePack.
