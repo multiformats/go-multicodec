@@ -3,7 +3,7 @@ package multicodec_test
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"strings"
 	"testing"
 
@@ -70,7 +70,7 @@ func TestFlagValue(t *testing.T) {
 			t.Parallel()
 
 			fs := flag.NewFlagSet("", flag.ContinueOnError)
-			fs.SetOutput(ioutil.Discard)
+			fs.SetOutput(io.Discard)
 
 			var code multicodec.Code
 			fs.Var(&code, "multicodec", "")
