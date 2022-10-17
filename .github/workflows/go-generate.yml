@@ -1,0 +1,25 @@
+name: Go Generate
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - uses: actions/setup-go@v3
+      with:
+        go-version: "1.19.x"
+    - run: git submodule init
+    - run: git submodule update
+    - run: go generate
+    - uses: peter-evans/create-pull-request@ad43dccb4d726ca8514126628bec209b8354b6dd # Create Pull Request v4.1.4
+      with:
+        commit-message: "chore: update submodules and go generate"
+        branch: go-generate
+        title: "Changes by ${{ github.workflow }} workflow"
+        body: "Automated changes by [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) workflow run"
