@@ -14,8 +14,7 @@ jobs:
     - uses: actions/setup-go@v3
       with:
         go-version: "1.19.x"
-    - run: git submodule init
-    - run: git submodule update
+    - run: git submodule update --init --recursive --remote
     - run: go generate
     - uses: peter-evans/create-pull-request@ad43dccb4d726ca8514126628bec209b8354b6dd # Create Pull Request v4.1.4
       with:
