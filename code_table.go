@@ -321,6 +321,9 @@ const (
 	// Webrtc is a draft code tagged "multiaddr" and described by: WebRTC.
 	Webrtc Code = 0x0118 // webrtc
 
+	// WebrtcW3c is a draft code tagged "muliaddr" and described by: WebRTC connection establishment using flow described in W3C specification.
+	WebrtcW3c Code = 0x0119 // webrtc-w3c
+
 	// P2pCircuit is a permanent code tagged "multiaddr".
 	P2pCircuit Code = 0x0122 // p2p-circuit
 
@@ -1698,6 +1701,7 @@ var knownCodes = []Code{
 	P2pWebrtcDirect,
 	P2pStardust,
 	Webrtc,
+	WebrtcW3c,
 	P2pCircuit,
 	DagJson,
 	Udt,
@@ -2235,6 +2239,9 @@ func (c Code) Tag() string {
 		Libp2pRelayRsvp,
 		Memorytransport:
 		return "libp2p"
+
+	case WebrtcW3c:
+		return "muliaddr"
 
 	case Ip4,
 		Tcp,
