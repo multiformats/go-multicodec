@@ -318,11 +318,11 @@ const (
 	// P2pStardust is a draft code tagged "multiaddr".
 	P2pStardust Code = 0x0115 // p2p-stardust
 
-	// Webrtc is a draft code tagged "multiaddr" and described by: WebRTC.
-	Webrtc Code = 0x0118 // webrtc
+	// WebrtcDirect is a draft code tagged "multiaddr" and described by: ICE-lite webrtc transport with SDP munging during connection establishment and without use of a STUN server.
+	WebrtcDirect Code = 0x0118 // webrtc-direct
 
-	// WebrtcW3c is a draft code tagged "multiaddr" and described by: WebRTC connection establishment using flow described in W3C specification.
-	WebrtcW3c Code = 0x0119 // webrtc-w3c
+	// Webrtc is a draft code tagged "multiaddr" and described by: webrtc transport where connection establishment is according to w3c spec.
+	Webrtc Code = 0x0119 // webrtc
 
 	// P2pCircuit is a permanent code tagged "multiaddr".
 	P2pCircuit Code = 0x0122 // p2p-circuit
@@ -1700,8 +1700,8 @@ var knownCodes = []Code{
 	P2pWebrtcStar,
 	P2pWebrtcDirect,
 	P2pStardust,
+	WebrtcDirect,
 	Webrtc,
-	WebrtcW3c,
 	P2pCircuit,
 	DagJson,
 	Udt,
@@ -2255,8 +2255,8 @@ func (c Code) Tag() string {
 		P2pWebrtcStar,
 		P2pWebrtcDirect,
 		P2pStardust,
+		WebrtcDirect,
 		Webrtc,
-		WebrtcW3c,
 		P2pCircuit,
 		Udt,
 		Utp,
