@@ -309,13 +309,13 @@ const (
 	// Udp is a draft code tagged "multiaddr".
 	Udp Code = 0x0111 // udp
 
-	// P2pWebrtcStar is a draft code tagged "multiaddr".
+	// P2pWebrtcStar is a deprecated code tagged "multiaddr" and described by: Use webrtc or webrtc-direct instead.
 	P2pWebrtcStar Code = 0x0113 // p2p-webrtc-star
 
-	// P2pWebrtcDirect is a draft code tagged "multiaddr".
+	// P2pWebrtcDirect is a deprecated code tagged "multiaddr" and described by: Use webrtc or webrtc-direct instead.
 	P2pWebrtcDirect Code = 0x0114 // p2p-webrtc-direct
 
-	// P2pStardust is a draft code tagged "multiaddr".
+	// P2pStardust is a deprecated code tagged "multiaddr".
 	P2pStardust Code = 0x0115 // p2p-stardust
 
 	// WebrtcDirect is a draft code tagged "multiaddr" and described by: ICE-lite webrtc transport with SDP munging during connection establishment and without use of a STUN server.
