@@ -435,6 +435,9 @@ const (
 	// TransportGraphsyncFilecoinv1 is a draft code tagged "transport" and described by: Filecoin graphsync datatransfer.
 	TransportGraphsyncFilecoinv1 Code = 0x0910 // transport-graphsync-filecoinv1
 
+	// TransportIpfsGatewayHttp is a draft code tagged "transport" and described by: HTTP IPFS Gateway trustless datatransfer.
+	TransportIpfsGatewayHttp Code = 0x0920 // transport-ipfs-gateway-http
+
 	// Multidid is a draft code tagged "multiformat" and described by: Compact encoding for Decentralized Identifers.
 	Multidid Code = 0x0d1d // multidid
 
@@ -1739,6 +1742,7 @@ var knownCodes = []Code{
 	CarMultihashIndexSorted,
 	TransportBitswap,
 	TransportGraphsyncFilecoinv1,
+	TransportIpfsGatewayHttp,
 	Multidid,
 	Sha2_256Trunc254Padded,
 	Sha2_224,
@@ -2675,7 +2679,8 @@ func (c Code) Tag() string {
 		return "softhash"
 
 	case TransportBitswap,
-		TransportGraphsyncFilecoinv1:
+		TransportGraphsyncFilecoinv1,
+		TransportIpfsGatewayHttp:
 		return "transport"
 
 	case Varsig,
