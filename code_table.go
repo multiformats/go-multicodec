@@ -99,6 +99,9 @@ const (
 	// Multibase is a draft code tagged "multiformat".
 	Multibase Code = 0x33 // multibase
 
+	// Varsig is a draft code tagged "multiformat" and described by: Variable signature (varsig) multiformat.
+	Varsig Code = 0x34 // varsig
+
 	// Dns is a permanent code tagged "multiaddr".
 	Dns Code = 0x35 // dns
 
@@ -1524,8 +1527,8 @@ const (
 	// ZeroxcertImprint256 is a draft code tagged "zeroxcert" and described by: 0xcert Asset Imprint (root hash).
 	ZeroxcertImprint256 Code = 0xce11 // zeroxcert-imprint-256
 
-	// Varsig is a draft code tagged "varsig" and described by: Namespace for all not yet standard signature algorithms.
-	Varsig Code = 0xd000 // varsig
+	// NonstandardSig is a deprecated code tagged "varsig" and described by: Namespace for all not yet standard signature algorithms.
+	NonstandardSig Code = 0xd000 // nonstandard-sig
 
 	// Es256k is a draft code tagged "varsig" and described by: ES256K Siganture Algorithm (secp256k1).
 	Es256k Code = 0xd0e7 // es256k
@@ -1630,6 +1633,7 @@ var knownCodes = []Code{
 	Multihash,
 	Multiaddr,
 	Multibase,
+	Varsig,
 	Dns,
 	Dns4,
 	Dns6,
@@ -2105,7 +2109,7 @@ var knownCodes = []Code{
 	JsonJcs,
 	Iscc,
 	ZeroxcertImprint256,
-	Varsig,
+	NonstandardSig,
 	Es256k,
 	Bls12381G1Sig,
 	Bls12381G2Sig,
@@ -2291,6 +2295,7 @@ func (c Code) Tag() string {
 		Multihash,
 		Multiaddr,
 		Multibase,
+		Varsig,
 		Caip50,
 		Multidid:
 		return "multiformat"
@@ -2683,7 +2688,7 @@ func (c Code) Tag() string {
 		TransportIpfsGatewayHttp:
 		return "transport"
 
-	case Varsig,
+	case NonstandardSig,
 		Es256k,
 		Bls12381G1Sig,
 		Bls12381G2Sig,
