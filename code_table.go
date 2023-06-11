@@ -198,8 +198,8 @@ const (
 	// EthReceiptLogTrie is a draft code tagged "ipld" and described by: Ethereum Transaction Receipt Log Trie (Eth-Trie).
 	EthReceiptLogTrie Code = 0x99 // eth-receipt-log-trie
 
-	// EthRecieptLog is a draft code tagged "ipld" and described by: Ethereum Transaction Receipt Log (RLP).
-	EthRecieptLog Code = 0x9a // eth-reciept-log
+	// EthReceiptLog is a draft code tagged "ipld" and described by: Ethereum Transaction Receipt Log (RLP).
+	EthReceiptLog Code = 0x9a // eth-receipt-log
 
 	// Aes128 is a draft code tagged "key" and described by: 128-bit AES symmetric key.
 	Aes128 Code = 0xa0 // aes-128
@@ -1598,6 +1598,9 @@ const (
 
 	// Rs256 is a draft code tagged "varsig" and described by: RS256 Signature Algorithm.
 	Rs256 Code = 0xd01205 // rs256
+
+	// Scion is a draft code tagged "multiaddr" and described by: SCION Internet architecture.
+	Scion Code = 0xd02000 // scion
 )
 
 var knownCodes = []Code{
@@ -1666,7 +1669,7 @@ var knownCodes = []Code{
 	EthAccountSnapshot,
 	EthStorageTrie,
 	EthReceiptLogTrie,
-	EthRecieptLog,
+	EthReceiptLog,
 	Aes128,
 	Aes192,
 	Aes256,
@@ -2133,6 +2136,7 @@ var knownCodes = []Code{
 	Es284,
 	Es512,
 	Rs256,
+	Scion,
 }
 
 func (c Code) Tag() string {
@@ -2191,7 +2195,7 @@ func (c Code) Tag() string {
 		EthAccountSnapshot,
 		EthStorageTrie,
 		EthReceiptLogTrie,
-		EthRecieptLog,
+		EthReceiptLog,
 		BitcoinBlock,
 		BitcoinTx,
 		BitcoinWitnessCommitment,
@@ -2288,7 +2292,8 @@ func (c Code) Tag() string {
 		P2pWebsocketStar,
 		Http,
 		Silverpine,
-		Plaintextv2:
+		Plaintextv2,
+		Scion:
 		return "multiaddr"
 
 	case Multicodec,
