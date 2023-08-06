@@ -168,6 +168,9 @@ const (
 	// DagCose is a draft code tagged "ipld" and described by: MerkleDAG COSE.
 	DagCose Code = 0x86 // dag-cose
 
+	// Lbry is a draft code tagged "namespace" and described by: LBRY Address.
+	Lbry Code = 0x8c // lbry
+
 	// EthBlock is a permanent code tagged "ipld" and described by: Ethereum Header (RLP).
 	EthBlock Code = 0x90 // eth-block
 
@@ -530,6 +533,9 @@ const (
 
 	// Sm3_256 is a draft code tagged "multihash".
 	Sm3_256 Code = 0x534d // sm3-256
+
+	// Sha256a is a draft code tagged "hash" and described by: The sum of multiple sha2-256 hashes; as specified by Ceramic CIP-124..
+	Sha256a Code = 0x7012 // sha256a
 
 	// Blake2b8 is a draft code tagged "multihash" and described by: Blake2b consists of 64 output lengths that give different hashes.
 	Blake2b8 Code = 0xb201 // blake2b-8
@@ -1659,6 +1665,7 @@ var knownCodes = []Code{
 	Sctp,
 	DagJose,
 	DagCose,
+	Lbry,
 	EthBlock,
 	EthBlockList,
 	EthTxTrie,
@@ -1780,6 +1787,7 @@ var knownCodes = []Code{
 	AesGcm256,
 	Silverpine,
 	Sm3_256,
+	Sha256a,
 	Blake2b8,
 	Blake2b16,
 	Blake2b24,
@@ -2158,6 +2166,7 @@ func (c Code) Tag() string {
 		Crc32,
 		Crc64Ecma,
 		Murmur3X64_128,
+		Sha256a,
 		Xxh32,
 		Xxh64,
 		Xxh3_64,
@@ -2661,6 +2670,7 @@ func (c Code) Tag() string {
 		return "multihash"
 
 	case Path,
+		Lbry,
 		Streamid,
 		Ipld,
 		Ipfs,
