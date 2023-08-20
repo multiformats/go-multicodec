@@ -381,6 +381,9 @@ const (
 	// Noise is a draft code tagged "multiaddr".
 	Noise Code = 0x01c6 // noise
 
+	// Shs is a draft code tagged "multiaddr" and described by: Secure Scuttlebutt - Secret Handshake Stream.
+	Shs Code = 0x01c8 // shs
+
 	// Quic is a permanent code tagged "multiaddr".
 	Quic Code = 0x01cc // quic
 
@@ -1736,6 +1739,7 @@ var knownCodes = []Code{
 	Tls,
 	Sni,
 	Noise,
+	Shs,
 	Quic,
 	QuicV1,
 	Webtransport,
@@ -2292,6 +2296,7 @@ func (c Code) Tag() string {
 		Tls,
 		Sni,
 		Noise,
+		Shs,
 		Quic,
 		QuicV1,
 		Webtransport,
