@@ -13,10 +13,10 @@ jobs:
         submodules: recursive
     - uses: actions/setup-go@v3
       with:
-        go-version: "1.19.x"
+        go-version: "1.24.x"
     - run: git submodule update --init --recursive --remote
     - run: go generate
-    - uses: peter-evans/create-pull-request@ad43dccb4d726ca8514126628bec209b8354b6dd # Create Pull Request v4.1.4
+    - uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
       with:
         commit-message: "chore: update submodules and go generate"
         branch: go-generate
